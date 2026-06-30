@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Vietnamese Coffee - Single Origin Arabica &amp; Robusta from Da Lat, Buon Ma Thuot. Freshly roasted, ethically sourced. Shop premium coffee beans delivered worldwide.">
+    <meta name="keywords" content="Vietnamese coffee, specialty coffee, arabica, robusta, buon ma thuot coffee, single origin coffee, fresh roasted coffee">
+    <meta name="author" content="Viet Coffee">
+    <title>Viet Coffee | Premium Single Origin Vietnamese Coffee Beans</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Viet Coffee - Premium Vietnamese Coffee Beans">
+    <meta property="og:description" content="Discover the authentic taste of Vietnam. Single origin Arabica &amp; Robusta, freshly roasted and shipped worldwide.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com">
+    <meta property="og:image" content="https://picsum.photos/id/1015/1200/630">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+        
+        .tail-container {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        .heading-font {
+            font-family: 'Playfair Display', sans-serif;
+        }
+        .hero-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://picsum.photos/id/1015/2000/1200');
+            background-size: cover;
+            background-position: center;
+        }
+        .coffee-card {
+            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        .coffee-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+        }
+        .nav-scrolled {
+            background-color: rgba(74, 44, 26, 0.98);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="tail-container bg-[#f8f1e9] text-gray-800">
+
+    <!-- HEADER -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#4A2C1A] text-white">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-mug-hot text-3xl"></i>
+                <div class="text-2xl font-bold heading-font tracking-tight">VIET COFFEE</div>
+            </div>
+            
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#" class="hover:text-amber-300 transition-colors">Home</a>
+                <a href="#products" class="hover:text-amber-300 transition-colors">Shop</a>
+                <a href="#stories" class="hover:text-amber-300 transition-colors">Our Story</a>
+                <a href="#contact" class="hover:text-amber-300 transition-colors">Contact</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSearch()" class="p-2 hover:bg-white/10 rounded-full transition-colors">
+                    <i class="fa-solid fa-magnifying-glass text-xl"></i>
+                </button>
+                <button onclick="toggleCart()" class="p-2 hover:bg-white/10 rounded-full transition-colors relative">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section class="hero-bg h-screen flex items-center text-white pt-16">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h1 class="text-5xl md:text-7xl font-bold heading-font mb-6 leading-tight">
+                AUTHENTIC VIETNAMESE COFFEE
+            </h1>
+            <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto">
+                Single-origin beans from Vietnam's finest highlands. 
+                Freshly roasted with passion and delivered worldwide.
+            </p>
+            <a href="#products" 
+               class="inline-flex items-center gap-3 px-10 py-5 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-2xl text-lg transition-all">
+                SHOP OUR COLLECTION
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- FEATURED PRODUCT -->
+    <section class="py-20 bg-white" id="featured">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <span class="inline-block px-6 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-medium">FEATURED</span>
+                <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#4A2C1A] mt-4">Signature Selection</h2>
+            </div>
+            
+            <div class="max-w-2xl mx-auto">
+                <div class="coffee-card bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-xl">
+                    <div class="h-96 bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center p-8">
+                        <img src="https://picsum.photos/id/1060/600/600" alt="Premium Vietnamese Arabica Coffee Beans" 
+                             class="max-h-full object-contain hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="p-10">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-3xl font-bold">Da Lat Arabica Special</h3>
+                                <p class="text-amber-700 mt-1">Single Origin • Light Roast</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-4xl font-bold">$18</span>
+                                <span class="text-sm text-gray-500 block">500g</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-6">
+                            Bright acidity with notes of chocolate, caramel and wild berries. 
+                            Grown at high altitude in Da Lat, Vietnam.
+                        </p>
+                        <button onclick="addToCart(this)" 
+                                class="w-full bg-[#4A2C1A] hover:bg-black text-white py-5 rounded-2xl font-semibold flex items-center justify-center gap-3 text-lg">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            ADD TO CART - $18
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ALL PRODUCTS -->
+    <section class="py-20 bg-[#f8f1e9]" id="products">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-4xl heading-font font-bold text-[#4A2C1A]">Our Collection</h2>
+                    <p class="text-gray-600">5 exceptional Vietnamese coffees</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8" id="product-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- OUR STORY -->
+    <section class="py-20 bg-white" id="stories">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-12 gap-12 items-center">
+                <div class="md:col-span-5">
+                    <h2 class="text-4xl heading-font font-bold text-[#4A2C1A] mb-6">From Vietnam's Highlands to Your Cup</h2>
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        We work directly with farmers in Da Lat, Buon Ma Thuot and other renowned regions 
+                        to bring you the freshest, highest quality Vietnamese coffee beans.
+                    </p>
+                </div>
+                <div class="md:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-amber-50 p-8 rounded-3xl">
+                        <i class="fa-solid fa-seedling text-4xl text-amber-700 mb-4"></i>
+                        <h3 class="font-semibold text-xl mb-3">Direct Trade</h3>
+                        <p class="text-gray-600">Fair prices for farmers and exceptional quality for you.</p>
+                    </div>
+                    <div class="bg-amber-50 p-8 rounded-3xl">
+                        <i class="fa-solid fa-fire text-4xl text-amber-700 mb-4"></i>
+                        <h3 class="font-semibold text-xl mb-3">Artisan Roasting</h3>
+                        <p class="text-gray-600">Small-batch roasting to preserve unique flavors.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT FORM -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <span class="inline-block px-6 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-medium">GET IN TOUCH</span>
+                <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#4A2C1A] mt-4">Contact Us</h2>
+                <p class="mt-4 text-gray-600">Have questions? Want to wholesale? We'd love to hear from you.</p>
+            </div>
+            
+            <form id="contact-form" onsubmit="handleSubmit(event)" class="space-y-8">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Full Name</label>
+                        <input type="text" required 
+                               class="w-full px-6 py-4 border border-gray-300 rounded-2xl focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email Address</label>
+                        <input type="email" required 
+                               class="w-full px-6 py-4 border border-gray-300 rounded-2xl focus:outline-none focus:border-amber-500">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">Subject</label>
+                    <input type="text" required placeholder="Wholesale Inquiry, Product Question, etc."
+                           class="w-full px-6 py-4 border border-gray-300 rounded-2xl focus:outline-none focus:border-amber-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">Message</label>
+                    <textarea required rows="6" placeholder="Tell us more..."
+                              class="w-full px-6 py-4 border border-gray-300 rounded-3xl focus:outline-none focus:border-amber-500 resize-y"></textarea>
+                </div>
+                
+                <button type="submit"
+                        class="w-full md:w-auto px-12 py-5 bg-[#4A2C1A] hover:bg-black text-white font-semibold rounded-2xl transition-all flex items-center justify-center gap-3 mx-auto">
+                    SEND MESSAGE
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#2C1A0F] text-amber-100 pt-16 pb-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-10">
+                <div>
+                    <div class="flex items-center gap-3 text-white mb-6">
+                        <i class="fa-solid fa-mug-hot text-3xl"></i>
+                        <span class="text-2xl font-bold heading-font">VIET COFFEE</span>
+                    </div>
+                    <p class="text-sm text-amber-200/70">Premium Vietnamese Coffee • Worldwide Shipping</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-6 text-white">Shop</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="hover:text-white">All Coffees</a></li>
+                        <li><a href="#" class="hover:text-white">Arabica</a></li>
+                        <li><a href="#" class="hover:text-white">Robusta</a></li>
+                        <li><a href="#" class="hover:text-white">Subscriptions</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-6 text-white">Company</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="hover:text-white">Our Story</a></li>
+                        <li><a href="#" class="hover:text-white">Sustainability</a></li>
+                        <li><a href="#contact" class="hover:text-white">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-6 text-white">Get in Touch</h4>
+                    <p class="text-sm">hello@vietcoffee.com</p>
+                    <div class="flex gap-5 mt-6">
+                        <i class="fa-brands fa-facebook text-2xl hover:text-white cursor-pointer"></i>
+                        <i class="fa-brands fa-instagram text-2xl hover:text-white cursor-pointer"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center text-xs text-amber-200/50 mt-16 pt-8 border-t border-amber-900/50">
+                © 2026 Viet Coffee. All rights reserved. • International Shipping Available
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="hidden fixed inset-0 bg-black/70 z-[100] flex items-end md:items-center justify-center">
+        <div class="bg-white w-full max-w-lg rounded-t-3xl md:rounded-3xl">
+            <div class="p-6 border-b flex justify-between">
+                <h3 class="text-2xl font-semibold">Your Cart</h3>
+                <button onclick="toggleCart()" class="text-4xl leading-none hover:text-gray-400">×</button>
+            </div>
+            <div id="cart-items" class="p-6 min-h-[200px]"></div>
+            <div class="p-6 border-t">
+                <div class="flex justify-between text-xl mb-6">
+                    <span>Total</span>
+                    <span id="cart-total" class="font-bold">$0</span>
+                </div>
+                <button onclick="checkout()" class="w-full py-5 bg-[#4A2C1A] text-white rounded-2xl font-semibold text-lg">
+                    PROCEED TO CHECKOUT
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Product Data
+        const products = [
+            { name: "Da Lat Arabica Special", price: 18, desc: "Bright & fruity", img: "https://picsum.photos/id/1060/400/400" },
+            { name: "Buon Ma Thuot Robusta", price: 15, desc: "Bold & earthy", img: "https://picsum.photos/id/870/400/400" },
+            { name: "Signature Blend", price: 17, desc: "Balanced daily brew", img: "https://picsum.photos/id/201/400/400" },
+            { name: "Dark Espresso Roast", price: 19, desc: "Intense & chocolatey", img: "https://picsum.photos/id/292/400/400" },
+            { name: "Culi Premium", price: 22, desc: "Rare & complex", img: "https://picsum.photos/id/133/400/400" }
+        ];
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'coffee-card bg-white border border-gray-100 rounded-3xl overflow-hidden';
+                card.innerHTML = `
+                    <div class="h-56 bg-amber-50 flex items-center justify-center p-6">
+                        <img src="${product.img}" alt="${product.name}" class="max-h-52 object-contain">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-semibold text-lg">${product.name}</h3>
+                        <p class="text-amber-700 text-sm">${product.desc}</p>
+                        <div class="flex justify-between items-end mt-6">
+                            <div class="text-2xl font-bold">$${product.price}</div>
+                            <button onclick="addToCart(this)" 
+                                    class="bg-[#4A2C1A] text-white px-6 py-3 rounded-2xl text-sm font-medium">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        let cart = [];
+
+        function addToCart(btn) {
+            const card = btn.closest('.coffee-card');
+            const name = card.querySelector('h3').textContent;
+            const priceText = card.querySelector('.text-2xl').textContent;
+            const price = parseFloat(priceText.replace('$',''));
+            
+            cart.push({name, price});
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            
+            const toast = document.createElement('div');
+            toast.style.cssText = 'position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:#4A2C1A; color:white; padding:16px 24px; border-radius:9999px; z-index:200;';
+            toast.textContent = `Added ${name}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 1800);
+        }
+
+        function updateCartCount() {
+            document.getElementById('cart-count').textContent = cart.length;
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            let html = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                html = `<p class="text-center py-12 text-gray-400">Your cart is empty</p>`;
+            } else {
+                cart.forEach((item, i) => {
+                    total += item.price;
+                    html += `
+                        <div class="flex justify-between items-center py-3 border-b">
+                            <div>
+                                <div class="font-medium">${item.name}</div>
+                                <div class="text-sm text-gray-500">$${item.price}</div>
+                            </div>
+                            <button onclick="removeFromCart(${i})" class="text-red-500 text-xl">×</button>
+                        </div>`;
+                });
+            }
+            container.innerHTML = html;
+            document.getElementById('cart-total').textContent = '$' + total;
+        }
+
+        function removeFromCart(i) {
+            cart.splice(i, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+            updateCartCount();
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+            alert("Thank you! This would connect to a payment gateway in production.");
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            toggleCart();
+            updateCartCount();
+        }
+
+        function toggleSearch() {
+            alert("Search coming soon.");
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            alert("Thank you! Your message has been received. (Demo form)");
+            e.target.reset();
+        }
+
+        // Initialize
+        window.onload = () => {
+            renderProducts();
+            cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            updateCartCount();
+
+            window.addEventListener('scroll', () => {
+                document.getElementById('header').classList.toggle('nav-scrolled', window.scrollY > 80);
+            });
+        };
+    </script>
+</body>
+</html>
