@@ -15,3 +15,215 @@ Tags: coffee, ecommerce, woocommerce, responsive
 
 This theme is based on the custom landing page design for Viet Coffee.
 */
+
+/* Prevent layout jitter / FOUC helpers */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ensure fixed header doesn't cause jump on load */
+#header {
+  min-height: 72px; /* reserve space for fixed header */
+}
+
+/* Better list in nav from wp_nav_menu */
+nav ul {
+  list-style: none;
+}
+
+nav ul li {
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+nav a:hover {
+  color: #fcd34d;
+}
+
+/* Image stability to reduce CLS on refresh */
+.coffee-card img,
+.hero-bg {
+  display: block;
+}
+
+.coffee-card .h-56 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Cart / modal base (Tailwind handles most) */
+.cart-modal-panel {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Offset for fixed header when jumping to #anchors */
+section[id],
+div[id] {
+  scroll-margin-top: 90px;
+}
+
+/* Style Woo mini-cart inside our modal a little nicer */
+#cart-modal-content ul.woocommerce-mini-cart,
+#cart-modal-content .woocommerce-mini-cart {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+}
+
+#cart-modal-content li.mini_cart_item,
+#cart-modal-content .woocommerce-mini-cart-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1e7df;
+  align-items: flex-start;
+}
+#cart-modal-content li.mini_cart_item:last-child,
+#cart-modal-content .woocommerce-mini-cart-item:last-child {
+  border-bottom: none;
+}
+
+/* Product image in mini cart */
+#cart-modal-content .mini_cart_item img,
+#cart-modal-content .woocommerce-mini-cart-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+/* Remove button */
+#cart-modal-content .remove {
+  color: #c2410f;
+  font-size: 18px;
+  line-height: 1;
+  text-decoration: none;
+  margin-left: auto;
+  padding: 0 4px;
+}
+#cart-modal-content .remove:hover {
+  color: #9f2f0a;
+}
+
+/* Subtotal / total row */
+#cart-modal-content .woocommerce-mini-cart__total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  padding-top: 10px;
+  border-top: 1px solid #f1e7df;
+  margin-top: 8px;
+}
+
+#cart-modal-content .quantity {
+  font-feature-settings: "tnum";
+  font-size: 0.9em;
+  color: #666;
+}
+
+/* Hide the default "View cart / Checkout" buttons that come from shortcode/widget version */
+#cart-modal-content .woocommerce-mini-cart__buttons {
+  display: none !important;
+}
+
+/* ===================== Checkout Modal ===================== */
+.checkout-modal-panel {
+  max-width: 1080px;
+}
+
+/* Mobile menu polish */
+#mobile-menu a {
+  color: #f5e8d3;
+  display: block;
+  padding: 11px 4px;
+  font-weight: 500;
+}
+#mobile-menu a:hover {
+  color: #fff;
+}
+
+/* Make sure hero text looks great */
+.hero-bg h1 {
+  text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+}
+
+/* Small polish for professional feel */
+footer a {
+  transition: color .15s;
+}
+footer a:hover {
+  color: #fff;
+}
+
+#checkout-modal-content {
+  background: #fff;
+}
+
+/* Make Woo checkout form look decent inside the modal */
+#checkout-modal-content .woocommerce-checkout {
+  display: block;
+  max-width: 100%;
+}
+
+/* Improve layout inside constrained modal panel */
+#checkout-modal-content .col2-set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+#checkout-modal-content .col2-set .col-1,
+#checkout-modal-content .col2-set .col-2 {
+  flex: 1 1 46%;
+  min-width: 260px;
+}
+@media (max-width: 720px) {
+  #checkout-modal-content .col2-set .col-1,
+  #checkout-modal-content .col2-set .col-2 {
+    flex: 1 1 100%;
+  }
+}
+
+#checkout-modal-content .woocommerce-billing-fields,
+#checkout-modal-content .woocommerce-shipping-fields,
+#checkout-modal-content #order_review {
+  margin-bottom: 1.25rem;
+}
+
+/* Keep default WooCommerce layout for billing/shipping columns inside modal (let WC decide flex/float) */
+
+#checkout-modal-content .woocommerce-checkout-review-order {
+  background: #faf7f2;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+#checkout-modal-content #payment {
+  margin-top: 1rem;
+}
+
+#checkout-modal-content .form-row {
+  margin-bottom: 0.75rem;
+}
+
+#checkout-modal-content button#place_order {
+  width: 100%;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  font-size: 1rem;
+  border-radius: 9999px;
+  background: #4A2C1A;
+  color: #fff;
+}
+
+#checkout-modal-content .woocommerce-error,
+#checkout-modal-content .woocommerce-message {
+  font-size: 0.875rem;
+}

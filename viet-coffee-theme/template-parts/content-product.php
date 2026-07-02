@@ -13,7 +13,7 @@ global $product;
         <p class="text-amber-700 text-sm"><?php echo $product->get_short_description(); ?></p>
         <div class="flex justify-between items-end mt-6">
             <div class="text-2xl font-bold"><?php echo $product->get_price_html(); ?></div>
-            <button onclick="addToCartWoo(<?php echo $product->get_id(); ?>)" 
+            <button data-add-to-cart="<?php echo $product->get_id(); ?>" 
                     class="bg-[#4A2C1A] text-white px-6 py-3 rounded-2xl text-sm font-medium">
                 Add to Cart
             </button>
