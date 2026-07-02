@@ -76,6 +76,31 @@ function viet_coffee_settings_page_enhanced() {
                 </form>
             </div>
 
+            <!-- Signature Selection Text Card -->
+            <?php
+            $sig_options = get_option( 'viet_coffee_options', array() );
+            $sig_text    = isset( $sig_options['signature_text'] ) ? $sig_options['signature_text'] : '';
+            ?>
+            <div class="card" style="padding:24px; border:1px solid #e2e8f0; border-radius:12px; background:#fff;">
+                <h2 style="margin-top:0; font-size:18px;">✍️ Signature Selection Text</h2>
+                <form method="post" action="options.php" style="margin-top:8px;">
+                    <?php settings_fields( 'viet_coffee_settings' ); ?>
+                    <table class="form-table" style="margin:0;">
+                        <tr>
+                            <td style="padding:0;">
+                                <textarea name="viet_coffee_options[signature_text]" rows="5"
+                                          class="large-text" style="width:100%;"
+                                          placeholder="<?php esc_attr_e( 'Enter the description text for the Signature Selection section…', 'viet-coffee' ); ?>"><?php echo esc_textarea( $sig_text ); ?></textarea>
+                                <p class="description" style="margin-top:4px;">
+                                    <?php esc_html_e( 'This text is displayed in the Signature Selection section on the homepage.', 'viet-coffee' ); ?>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                    <?php submit_button( __( 'Save Signature Text', 'viet-coffee' ), 'secondary', 'submit', false ); ?>
+                </form>
+            </div>
+
             <!-- Demo Import Card -->
             <div class="card" style="padding:24px; border:1px solid #4A2C1A; border-radius:12px; background:#fffaf0; grid-column: span 1 / -1;">
                 <h2 style="margin-top:4px; font-size:18px; color:#4A2C1A;">📦 One-Click Demo Import</h2>

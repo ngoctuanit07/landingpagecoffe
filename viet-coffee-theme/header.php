@@ -45,8 +45,11 @@
 <body <?php body_class('tail-container bg-[#f8f1e9] text-gray-800'); ?>>
     <!-- HEADER -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#4A2C1A] text-white">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-            <!-- Logo -->
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center">
+            <!-- Left spacer (balances the actions on the right to keep logo truly centered) -->
+            <div class="flex-1"></div>
+
+            <!-- Logo - centered -->
             <div class="flex items-center">
                 <?php if ( function_exists( 'viet_coffee_the_logo' ) ) {
                     viet_coffee_the_logo();
@@ -57,21 +60,9 @@
                     echo '</a>';
                 } ?>
             </div>
-            
-            <!-- Desktop Nav -->
-            <nav class="hidden md:block">
-                <?php
-                wp_nav_menu( array(
-                    'theme_location' => 'primary',
-                    'container' => false,
-                    'menu_class' => 'flex items-center gap-8 text-sm font-medium list-none m-0 p-0',
-                    'fallback_cb' => false,
-                ) );
-                ?>
-            </nav>
 
-            <!-- Actions -->
-            <div class="flex items-center gap-2 md:gap-4">
+            <!-- Actions - right -->
+            <div class="flex-1 flex items-center justify-end gap-2 md:gap-4">
                 <button onclick="toggleSearch()" class="p-2 hover:bg-white/10 rounded-full transition-colors" aria-label="<?php esc_attr_e( 'Search', 'viet-coffee' ); ?>">
                     <i class="fa-solid fa-magnifying-glass text-xl"></i>
                 </button>
@@ -85,33 +76,6 @@
                 </a>
                 <?php endif; ?>
 
-                <!-- Mobile Hamburger -->
-                <button id="mobile-menu-toggle" class="md:hidden p-2 hover:bg-white/10 rounded-full" aria-label="Toggle menu" aria-expanded="false">
-                    <i class="fa-solid fa-bars text-2xl"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Professional Mobile Slide-in Menu -->
-        <div id="mobile-menu" class="mobile-menu md:hidden fixed top-[69px] right-0 bottom-0 w-[82%] max-w-[280px] bg-[#3f261a] text-white shadow-2xl z-[60] p-6 overflow-auto">
-            <nav class="mobile-nav text-[15px]">
-                <?php
-                wp_nav_menu( array(
-                    'theme_location' => 'primary',
-                    'container' => false,
-                    'fallback_cb' => false,
-                ) );
-                ?>
-            </nav>
-            <div class="mt-8 pt-6 border-t border-white/20 grid grid-cols-2 gap-3">
-                <?php if ( class_exists( 'WooCommerce' ) ) : ?>
-                    <a href="<?php echo esc_url( wc_get_cart_url() ); ?>" class="text-center py-2.5 rounded-2xl border border-white/30 text-sm">
-                        <i class="fa-solid fa-cart-shopping mr-1.5"></i> <?php esc_html_e( 'Cart', 'viet-coffee' ); ?>
-                    </a>
-                <?php endif; ?>
-                <button onclick="toggleSearch(); closeMobileMenu && closeMobileMenu();" class="text-center py-2.5 rounded-2xl border border-white/30 text-sm">
-                    <i class="fa-solid fa-search mr-1.5"></i> <?php esc_html_e( 'Search', 'viet-coffee' ); ?>
-                </button>
             </div>
         </div>
     </header>
