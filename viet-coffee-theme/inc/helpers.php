@@ -8,10 +8,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Get primary color
+ * Get primary color - NEW PALETTE
  */
 function viet_coffee_get_primary_color() {
-    return get_theme_mod( 'primary_color', '#4A2C1A' );
+    return '#6B4423'; // Brown primary
+}
+
+/**
+ * Get accent color
+ */
+function viet_coffee_get_accent_color() {
+    return '#D4A574'; // Tan accent
+}
+
+/**
+ * Get success color (CTA button)
+ */
+function viet_coffee_get_success_color() {
+    return '#4CAF50'; // Green conversion color
+}
+
+/**
+ * Get background cream color
+ */
+function viet_coffee_get_bg_color() {
+    return '#FBF8F3'; // Cream background
 }
 
 /**
@@ -47,15 +68,15 @@ function viet_coffee_render_contact_form() {
     ?>
     <form id="viet-coffee-contact-form" class="space-y-4" novalidate>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="text" name="name" placeholder="<?php esc_attr_e( 'Your name', 'viet-coffee' ); ?>" required class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-[#4A2C1A]">
-            <input type="email" name="email" placeholder="<?php esc_attr_e( 'Your email', 'viet-coffee' ); ?>" required class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-[#4A2C1A]">
+            <input type="text" name="name" placeholder="Họ tên của bạn" required class="w-full px-4 py-3 border border-[#E8DCC9] rounded-lg focus:outline-none focus:border-[#D4A574] focus:ring-2 focus:ring-[#D4A574]/20" style="border-color: #E8DCC9;">
+            <input type="email" name="email" placeholder="Email của bạn" required class="w-full px-4 py-3 border border-[#E8DCC9] rounded-lg focus:outline-none focus:border-[#D4A574] focus:ring-2 focus:ring-[#D4A574]/20" style="border-color: #E8DCC9;">
         </div>
-        <textarea name="message" rows="4" placeholder="<?php esc_attr_e( 'How can we help you?', 'viet-coffee' ); ?>" required class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-[#4A2C1A]"></textarea>
+        <textarea name="message" rows="5" placeholder="Tin nhắn của bạn..." required class="w-full px-4 py-3 border border-[#E8DCC9] rounded-lg focus:outline-none focus:border-[#D4A574] focus:ring-2 focus:ring-[#D4A574]/20" style="border-color: #E8DCC9;"></textarea>
         
-        <button type="submit" class="w-full bg-[#4A2C1A] hover:bg-black transition-colors text-white py-3.5 rounded-2xl font-semibold">
-            <?php esc_html_e( 'Send Message', 'viet-coffee' ); ?>
+        <button type="submit" class="w-full bg-[#4CAF50] hover:bg-[#3d8b40] transition-all text-white py-3.5 rounded-lg font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5" style="background-color: #4CAF50;">
+            <i class="fa-solid fa-paper-plane mr-2"></i> <?php esc_html_e( 'Gửi tin nhắn', 'viet-coffee' ); ?>
         </button>
-        <div id="contact-form-result" class="text-sm text-center h-5"></div>
+        <div id="contact-form-result" class="text-sm text-center h-5 font-medium"></div>
     </form>
 
     <script>
@@ -64,7 +85,11 @@ function viet_coffee_render_contact_form() {
             e.preventDefault();
             const $form = $(this);
             const $result = $('#contact-form-result');
-            $result.text('<?php echo esc_js( __( 'Sending...', 'viet-coffee' ) ); ?>').removeClass('text-red-600 text-green-600');
+            const $button = $form.find('button[type=submit]');
+            const originalText = $button.html();
+            
+            $result.removeClass('text-red-600 text-green-600').text('Đang gửi...');
+            $button.prop('disabled', true).css('opacity', '0.6');
 
             $.post( (window.vietCoffee && vietCoffee.ajax_url) || '/wp-admin/admin-ajax.php', {
                 action: 'viet_coffee_contact',
@@ -74,13 +99,18 @@ function viet_coffee_render_contact_form() {
                 message:$form.find('[name=message]').val()
             }, function(res){
                 if (res.success) {
-                    $result.addClass('text-green-600').text(res.data || 'Thank you! We will reply soon.');
+                    $result.addClass('text-green-600').text('✓ ' + (res.data || 'Cảm ơn! Chúng tôi sẽ trả lời sớm.'));
                     $form[0].reset();
+                    setTimeout(() => {
+                        $result.text('');
+                    }, 5000);
                 } else {
-                    $result.addClass('text-red-600').text(res.data || 'Please check your input.');
+                    $result.addClass('text-red-600').text('✗ ' + (res.data || 'Vui lòng kiểm tra lại thông tin.'));
                 }
             }).fail(function(){
-                $result.addClass('text-red-600').text('<?php echo esc_js( __( 'Network error. Please try again later.', 'viet-coffee' ) ); ?>');
+                $result.addClass('text-red-600').text('✗ Lỗi kết nối. Vui lòng thử lại sau.');
+            }).always(function(){
+                $button.prop('disabled', false).css('opacity', '1');
             });
         });
     })(jQuery);

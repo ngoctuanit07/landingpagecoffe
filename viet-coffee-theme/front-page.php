@@ -10,30 +10,19 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 ?>
 
 <!-- HERO BANNER -->
-<section class="hero-bg h-screen flex items-center text-white pt-20">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-        <h1 class="text-5xl md:text-7xl font-bold heading-font mb-6 leading-tight">
-            <?php echo esc_html( get_theme_mod( 'hero_title', 'AUTHENTIC VIETNAMESE COFFEE' ) ); ?>
-        </h1>
-        <p class="hero-subtitle text-xl md:text-2xl mb-10 max-w-2xl mx-auto">
-            <?php echo esc_html( get_theme_mod( 'hero_subtitle', 'Single-origin beans from Vietnam\'s finest highlands. Freshly roasted with passion and delivered worldwide.' ) ); ?>
-        </p>
-        <a href="<?php echo esc_attr( get_theme_mod( 'hero_button_link', '#products' ) ); ?>" 
-           class="inline-flex items-center gap-3 px-10 py-5 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-2xl text-lg transition-all">
-            <?php echo esc_html( get_theme_mod( 'hero_button_text', 'SHOP OUR COLLECTION' ) ); ?>
-            <i class="fa-solid fa-arrow-right"></i>
-        </a>
-    </div>
-</section>
+<section class="hero-bg min-h-screen"></section>
 
-<!-- TRUST / PROFESSIONAL BAR -->
-<section class="py-4 bg-white border-b">
+<!-- TRUST / GUARANTEE SECTION -->
+<section class="py-12 bg-white border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-6">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-y-3 text-center text-sm">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             <?php 
             if ( function_exists( 'viet_coffee_get_trust_items' ) ) {
                 foreach ( viet_coffee_get_trust_items() as $item ) {
-                    echo '<div class="flex items-center justify-center gap-2 text-[#4A2C1A]"><i class="fa-solid ' . esc_attr( $item['icon'] ) . '"></i> <span class="font-medium">' . esc_html( $item['text'] ) . '</span></div>';
+                    echo '<div class="flex flex-col items-center text-center">';
+                    echo '<div class="text-3xl mb-3" style="color: #D4A574;"><i class="fa-solid ' . esc_attr( $item['icon'] ) . '"></i></div>';
+                    echo '<span class="font-semibold text-sm text-[#3D2817]">' . esc_html( $item['text'] ) . '</span>';
+                    echo '</div>';
                 }
             }
             ?>
@@ -45,15 +34,15 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 <?php if ( $show_featured ) : ?>
 <section class="py-20 bg-white" id="featured">
     <div class="max-w-3xl mx-auto px-6 text-center">
-        <span class="inline-block px-6 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-medium"><?php esc_html_e( 'FEATURED', 'viet-coffee' ); ?></span>
-        <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#4A2C1A] mt-4 mb-6"><?php esc_html_e( 'Signature Selection', 'viet-coffee' ); ?></h2>
+        <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;">✨ FEATURED</span>
+        <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6 mb-6" style="color: #3D2817;">Bộ sưu tập tinh chọn</h2>
         <?php
         $sig_opts = get_option( 'viet_coffee_options', array() );
         $sig_text = isset( $sig_opts['signature_text'] ) ? $sig_opts['signature_text'] : '';
         if ( $sig_text ) {
-            echo '<p class="text-lg text-gray-600 leading-relaxed">' . nl2br( esc_html( $sig_text ) ) . '</p>';
+            echo '<p class="text-lg text-[#64748B] leading-relaxed">' . nl2br( esc_html( $sig_text ) ) . '</p>';
         } else {
-            echo '<p class="text-gray-400 italic">' . esc_html__( 'Configure this text in Viet Coffee → Signature Selection Text.', 'viet-coffee' ) . '</p>';
+            echo '<p class="text-[#64748B] italic">' . esc_html__( 'Các sản phẩm cà phê hàng đầu được chọn cẩn thận từ các vùng cao nguyên Tây Nguyên. Roasted tươi mỗi ngày.', 'viet-coffee' ) . '</p>';
         }
         ?>
     </div>
@@ -62,15 +51,15 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 
 <!-- ALL PRODUCTS -->
 <?php if ( $show_products ) : ?>
-<section class="py-20 bg-[#f8f1e9]" id="products">
+<section class="py-20 bg-[#FBF8F3]" id="products">
     <div class="max-w-7xl mx-auto px-6">
-        <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-10">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-12">
             <div>
-                <h2 class="text-4xl heading-font font-bold text-[#4A2C1A]"><?php esc_html_e( 'Our Collection', 'viet-coffee' ); ?></h2>
-                <p class="text-gray-600"><?php esc_html_e( 'Exceptional Vietnamese coffees', 'viet-coffee' ); ?></p>
+                <h2 class="text-4xl heading-font font-bold text-[#3D2817]" style="color: #3D2817;">Bộ sưu tập cà phê</h2>
+                <p class="text-[#64748B] text-lg mt-2">Những hạt cà phê chất lượng cao từ Việt Nam</p>
             </div>
-            <a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" class="mt-3 md:mt-0 inline-flex items-center gap-2 text-sm font-medium text-[#4A2C1A] hover:underline">
-                <?php esc_html_e( 'View full shop →', 'viet-coffee' ); ?>
+            <a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" class="mt-6 md:mt-0 inline-flex items-center gap-2 text-sm font-semibold text-[#6B4423] hover:text-[#D4A574] transition-colors">
+                <?php esc_html_e( 'Xem tất cả →', 'viet-coffee' ); ?>
             </a>
         </div>
 
@@ -102,71 +91,12 @@ $products_cat      = get_theme_mod( 'products_category', '' );
                 echo '</div>';
                 wp_reset_postdata();
             } else {
-                echo '<p class="text-gray-500">' . esc_html__( 'No products found. Import demo data or add products in WooCommerce.', 'viet-coffee' ) . '</p>';
+                echo '<div class="text-center py-12"><p class="text-[#64748B] text-lg">' . esc_html__( 'Chưa có sản phẩm. Hãy thêm sản phẩm trong WooCommerce.', 'viet-coffee' ) . '</p></div>';
             }
         } else {
-            echo '<p>' . esc_html__( 'WooCommerce is required for the shop.', 'viet-coffee' ) . '</p>';
+            echo '<p class="text-center text-[#64748B]">' . esc_html__( 'WooCommerce là bắt buộc cho shop.', 'viet-coffee' ) . '</p>';
         }
         ?>
-    </div>
-</section>
-<?php endif; ?>
-
-<!-- OUR STORY -->
-<?php if ( $show_stories ) : ?>
-<section class="py-20 bg-white" id="stories">
-    <div class="max-w-7xl mx-auto px-6">
-        <?php
-        $story_page = get_page_by_path( 'our-story' );
-        if ( $story_page ) {
-            echo apply_filters( 'the_content', $story_page->post_content );
-        } else {
-            ?>
-            <div class="max-w-4xl mx-auto text-center">
-                <span class="inline-block px-5 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-medium tracking-wider">OUR HERITAGE</span>
-                <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#4A2C1A] mt-4 mb-6"><?php esc_html_e( 'From Vietnam Highlands to Your Cup', 'viet-coffee' ); ?></h2>
-                <p class="text-lg text-gray-600"><?php esc_html_e( 'Use the Import Demo button in the Viet Coffee admin panel or edit a page called "our-story".', 'viet-coffee' ); ?></p>
-            </div>
-            <?php
-        }
-        ?>
-    </div>
-</section>
-<?php endif; ?>
-
-<!-- TESTIMONIALS -->
-<?php if ( $show_testimonials ) : ?>
-<section class="py-20 bg-[#f8f1e9]" id="testimonials">
-    <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center mb-12">
-            <span class="inline-block px-6 py-2 bg-white text-amber-800 rounded-full text-sm font-medium"><?php esc_html_e( 'LOVED BY COFFEE LOVERS', 'viet-coffee' ); ?></span>
-            <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#4A2C1A] mt-4"><?php esc_html_e( 'What Our Customers Say', 'viet-coffee' ); ?></h2>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-6">
-            <?php for ( $i = 1; $i <= 3; $i++ ) :
-                $quote = get_theme_mod( "testimonial_{$i}_quote", '' );
-                $name  = get_theme_mod( "testimonial_{$i}_name", '' );
-                $role  = get_theme_mod( "testimonial_{$i}_role", '' );
-                if ( ! $quote && $i === 1 ) {
-                    $quote = 'Cà phê ngon nhất tôi từng thử. Hương vị đậm đà và giao hàng rất nhanh.';
-                    $name = 'Nguyễn Thị Lan';
-                    $role = 'Coffee enthusiast, Hà Nội';
-                }
-                if ( $quote ) : ?>
-                    <div class="bg-white rounded-3xl p-8 shadow">
-                        <div class="text-3xl text-amber-400 mb-3">“</div>
-                        <p class="text-gray-700 mb-6 italic"><?php echo esc_html( $quote ); ?></p>
-                        <div>
-                            <div class="font-semibold"><?php echo esc_html( $name ); ?></div>
-                            <?php if ( $role ) : ?>
-                                <div class="text-sm text-gray-500"><?php echo esc_html( $role ); ?></div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                <?php endif;
-            endfor; ?>
-        </div>
     </div>
 </section>
 <?php endif; ?>
@@ -176,9 +106,9 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 <section id="contact" class="py-20 bg-white">
     <div class="max-w-3xl mx-auto px-6">
         <div class="text-center mb-10">
-            <span class="inline-block px-6 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-medium"><?php esc_html_e( 'GET IN TOUCH', 'viet-coffee' ); ?></span>
-            <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#4A2C1A] mt-4"><?php esc_html_e( 'Contact Us', 'viet-coffee' ); ?></h2>
-            <p class="text-gray-600 mt-3"><?php esc_html_e( 'Questions about orders, wholesale, or our coffees? We\'d love to hear from you.', 'viet-coffee' ); ?></p>
+            <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;">✉️ CONTACT</span>
+            <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6" style="color: #3D2817;">Liên hệ với chúng tôi</h2>
+            <p class="text-[#64748B] mt-3">Có câu hỏi? Chúng tôi rất vui được nghe từ bạn.</p>
         </div>
 
         <div class="max-w-xl mx-auto">
@@ -190,22 +120,22 @@ $products_cat      = get_theme_mod( 'products_category', '' );
                 echo do_shortcode( '[contact-form-7 id="1"]' ); // user can change
             } else {
                 // Fallback message + link to Customizer
-                echo '<div class="bg-amber-50 border border-amber-200 rounded-2xl p-8 text-center">';
-                echo '<p class="mb-3">' . esc_html__( 'Install Contact Form 7 or use the built-in form.', 'viet-coffee' ) . '</p>';
-                echo '<a href="' . esc_url( admin_url( 'customize.php' ) ) . '" class="text-[#4A2C1A] underline">' . esc_html__( 'Or edit contact details in Customizer → Contact & Social', 'viet-coffee' ) . '</a>';
+                echo '<div class="bg-[#FBF8F3] border border-[#E8DCC9] rounded-2xl p-8 text-center">';
+                echo '<p class="mb-3 text-[#64748B]">' . esc_html__( 'Cài đặt Contact Form 7 hoặc sử dụng biểu mẫu tích hợp.', 'viet-coffee' ) . '</p>';
+                echo '<a href="' . esc_url( admin_url( 'customize.php' ) ) . '" class="text-[#6B4423] underline font-semibold">' . esc_html__( 'Hoặc chỉnh sửa thông tin liên hệ trong Customizer', 'viet-coffee' ) . '</a>';
                 echo '</div>';
             }
             ?>
 
-            <div class="mt-10 text-sm text-center text-gray-600 space-y-1">
+            <div class="mt-10 text-sm text-center text-[#64748B] space-y-1">
                 <?php 
                 $email = get_theme_mod( 'contact_email', 'hello@vietcoffee.com' );
                 $phone = get_theme_mod( 'contact_phone', '' );
-                $addr  = get_theme_mod( 'contact_address', 'Buôn Ma Thuột, Vietnam' );
+                $addr  = get_theme_mod( 'contact_address', 'Buôn Ma Thuột, Việt Nam' );
                 ?>
-                <?php if ( $email ) : ?><div><strong><?php esc_html_e( 'Email:', 'viet-coffee' ); ?></strong> <a href="mailto:<?php echo esc_attr( $email ); ?>" class="text-[#4A2C1A]"><?php echo esc_html( $email ); ?></a></div><?php endif; ?>
-                <?php if ( $phone ) : ?><div><strong><?php esc_html_e( 'Phone:', 'viet-coffee' ); ?></strong> <?php echo esc_html( $phone ); ?></div><?php endif; ?>
-                <?php if ( $addr ) : ?><div><?php echo esc_html( $addr ); ?></div><?php endif; ?>
+                <?php if ( $email ) : ?><div><strong>Email:</strong> <a href="mailto:<?php echo esc_attr( $email ); ?>" class="text-[#6B4423]"><?php echo esc_html( $email ); ?></a></div><?php endif; ?>
+                <?php if ( $phone ) : ?><div><strong>Điện thoại:</strong> <?php echo esc_html( $phone ); ?></div><?php endif; ?>
+                <?php if ( $addr ) : ?><div><strong>Địa chỉ:</strong> <?php echo esc_html( $addr ); ?></div><?php endif; ?>
             </div>
         </div>
     </div>
