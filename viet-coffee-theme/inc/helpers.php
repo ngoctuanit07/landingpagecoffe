@@ -54,9 +54,11 @@ function viet_coffee_the_logo() {
     if ( has_custom_logo() ) {
         the_custom_logo();
     } else {
-        echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="flex items-center gap-3 text-white no-underline">';
-        echo '<i class="fa-solid fa-mug-hot text-3xl"></i>';
-        echo '<span class="text-2xl font-bold heading-font tracking-tight">' . esc_html( get_bloginfo( 'name' ) ) . '</span>';
+        echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="flex items-center gap-2.5 text-white no-underline">';
+        echo '<div class="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 rounded-xl flex items-center justify-center ring-1 ring-white/10">';
+        echo '<i class="fa-solid fa-mug-hot text-white text-base sm:text-lg"></i>';
+        echo '</div>';
+        echo '<span class="text-lg sm:text-xl font-bold heading-font tracking-tight hidden sm:block">' . esc_html( get_bloginfo( 'name' ) ) . '</span>';
         echo '</a>';
     }
 }

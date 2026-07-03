@@ -125,46 +125,105 @@ body {
 #header .max-w-7xl {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
-/* Logo Styling */
+/* Professional centered logo layout */
+#header .flex.items-center.h-full {
+  width: 100%;
+}
+
+/* Logo Styling - centered, premium feel */
 #header a[href*="home"],
+#header .flex.items-center.flex-shrink-0 a,
+#header .flex.items-center.flex-shrink-0 .custom-logo-link,
 .logo-link {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
   color: var(--color-white);
   text-decoration: none;
-  transition: all 0.3s ease;
-  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 700;
   font-family: 'Playfair Display', serif;
+  letter-spacing: -0.015em;
+}
+
+/* Custom logo image sizing */
+#header .custom-logo {
+  max-height: 38px;
+  width: auto;
+  border-radius: 6px;
 }
 
 #header a[href*="home"]:hover,
+#header .flex.items-center.flex-shrink-0 a:hover,
 .logo-link:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
-}
-
-/* Logo Icon */
-#header .logo-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.125rem;
-  color: var(--color-white);
-  transition: all 0.3s ease;
+  opacity: 0.95;
 }
 
 #header a[href*="home"]:hover .logo-icon,
+#header .flex.items-center.flex-shrink-0 a:hover .w-10,
 .logo-link:hover .logo-icon {
-  background-color: rgba(255, 255, 255, 0.3);
-  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 0.28);
+  transform: scale(1.03);
+}
+
+/* Logo Icon - refined */
+#header .w-10.h-10,
+#header .logo-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  color: var(--color-white);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  ring: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Right side action group - professional toolbar style */
+#header .bg-white\/5 {
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.2s ease;
+}
+
+#header .bg-white\/5:hover {
+  background-color: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Action buttons (search + cart) */
+#header button,
+#header a[aria-label*="Cart"],
+#header a[aria-label*="Shopping"] {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.95rem;
+  transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+#header button:hover,
+#header a[aria-label*="Cart"]:hover,
+#header a[aria-label*="Shopping"]:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.13);
+}
+
+/* Cart badge - clean & premium */
+#cart-count {
+  font-feature-settings: "tnum";
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255,255,255,0.2);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+a[aria-label*="Cart"]:hover #cart-count,
+a[aria-label*="Shopping"]:hover #cart-count {
+  transform: scale(1.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255,255,255,0.25);
 }
 
 /* Spacer */
@@ -179,55 +238,48 @@ body {
   gap: 0.5rem;
 }
 
-/* Header Buttons */
+/* Header Buttons - base (overridden for action toolbar) */
 #header button,
 #header a:not([href*="home"]) {
-  padding: 0.625rem;
   color: var(--color-white);
   background-color: transparent;
   border: none;
-  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 1.125rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 40px;
-  min-height: 40px;
 }
 
-#header button:hover,
-#header a:not([href*="home"]):hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  transform: scale(1.1);
+/* Scoped override for the professional right-side action buttons */
+#header .bg-white\/5 button,
+#header .bg-white\/5 a {
+  padding: 0;
+  min-width: 36px;
+  min-height: 36px;
+  font-size: 15px;
+  border-radius: 12px;
 }
 
-#header button:active,
-#header a:not([href*="home"]):active {
-  background-color: rgba(255, 255, 255, 0.25);
+#header .bg-white\/5 button:hover,
+#header .bg-white\/5 a:hover {
+  background-color: rgba(255, 255, 255, 0.13);
+  transform: scale(1.03);
 }
 
-/* Divider */
-#header .w-px {
-  width: 1px;
-  height: 24px;
-  background-color: rgba(255, 255, 255, 0.2);
-  margin: 0 0.25rem;
-}
-
-/* Cart Count Badge */
+/* Cart Count Badge - premium refined */
 #cart-count {
   background-color: var(--color-success) !important;
-  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.4);
-  font-size: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  font-size: 9.5px;
   font-weight: 700;
   line-height: 1;
+  letter-spacing: -0.2px;
 }
 
-#cart-count:hover {
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.6);
-  transform: scale(1.15);
+#header .bg-white\/5 a:hover #cart-count {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.25);
+  transform: scale(1.08);
 }
 
 /* Scrolled Header State */

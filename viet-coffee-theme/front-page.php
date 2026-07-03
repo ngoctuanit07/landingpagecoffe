@@ -101,6 +101,112 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 </section>
 <?php endif; ?>
 
+<!-- OUR STORY / CÂU CHUYỆN (lấy từ WordPress Page) -->
+<?php if ( $show_stories ) : ?>
+<?php
+    // Fetch content dynamically from the "our-story" WordPress page
+    $story_page = get_page_by_path( 'our-story' );
+    $story_permalink   = home_url( '/our-story' );
+    $story_image       = 'https://picsum.photos/id/1016/1200/900';
+    $story_intro       = 'Chúng tôi là những người con của đất Việt, đam mê mang tinh hoa cà phê Việt Nam đến với thế giới.';
+    $story_support     = 'Chúng tôi làm việc trực tiếp với những nông dân tại Buôn Ma Thuột, Đà Lạt và các vùng cao nguyên trứ danh khác. Mỗi hạt cà phê đều được chọn lọc kỹ lưỡng.';
+
+    if ( $story_page ) {
+        $story_permalink = get_permalink( $story_page->ID );
+
+        // Use featured image from the page if set
+        $featured_img = get_the_post_thumbnail_url( $story_page->ID, 'large' );
+        if ( $featured_img ) {
+            $story_image = $featured_img;
+        }
+
+        // Extract text from the page content (first two paragraphs)
+        $raw = $story_page->post_content;
+
+        $paragraphs = [];
+        if ( preg_match_all( '/<p[^>]*>(.*?)<\/p>/is', $raw, $matches ) ) {
+            foreach ( $matches[1] as $p ) {
+                $clean = trim( wp_strip_all_tags( $p ) );
+                if ( strlen( $clean ) > 20 ) {
+                    $paragraphs[] = $clean;
+                }
+            }
+        }
+
+        if ( ! empty( $paragraphs[0] ) ) {
+            $story_intro = wp_trim_words( $paragraphs[0], 32, '...' );
+        }
+        if ( ! empty( $paragraphs[1] ) ) {
+            $story_support = wp_trim_words( $paragraphs[1], 28, '...' );
+        }
+    }
+?>
+<section id="stories" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-12">
+            <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;">OUR HERITAGE</span>
+            <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6 mb-4" style="color: #3D2817;">Câu chuyện của chúng tôi</h2>
+            <p class="max-w-2xl mx-auto text-[#64748B] text-lg">Hành trình từ cao nguyên Việt Nam đến tách cà phê của bạn.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-10 lg:gap-14 items-center">
+            <!-- Visual (from page featured image) -->
+            <div class="order-2 md:order-1">
+                <div class="relative rounded-3xl overflow-hidden shadow-2xl ring-1 ring-black/5">
+                    <img 
+                        src="<?php echo esc_url( $story_image ); ?>" 
+                        alt="Câu chuyện của chúng tôi" 
+                        class="w-full h-auto object-cover"
+                        style="aspect-ratio: 4 / 3;"
+                    >
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#3D2817]/60 via-[#3D2817]/20 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6 text-white">
+                        <div class="uppercase tracking-[1.5px] text-xs opacity-75 mb-1">Tây Nguyên • Việt Nam</div>
+                        <div class="font-semibold text-lg">Nơi những hạt cà phê tốt nhất được sinh ra</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content (pulled from page) -->
+            <div class="order-1 md:order-2">
+                <div class="text-[#2D2D2D] space-y-4">
+                    <p class="text-[17px] leading-relaxed"><?php echo esc_html( $story_intro ); ?></p>
+                    
+                    <p class="text-[#64748B]"><?php echo esc_html( $story_support ); ?></p>
+                </div>
+
+                <!-- Story highlights (kept for visual appeal, consistent with page) -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+                    <div class="p-5 bg-[#FBF8F3] rounded-2xl border border-[#E8DCC9]/60 transition-all hover:-translate-y-0.5 hover:shadow-md">
+                        <div class="text-2xl mb-2.5">🌱</div>
+                        <div class="font-semibold text-[#3D2817] mb-1">Direct Trade</div>
+                        <p class="text-xs leading-snug text-[#64748B]">Hợp tác công bằng, giá tốt hơn cho nông dân và chất lượng vượt trội cho bạn.</p>
+                    </div>
+                    <div class="p-5 bg-[#FBF8F3] rounded-2xl border border-[#E8DCC9]/60 transition-all hover:-translate-y-0.5 hover:shadow-md">
+                        <div class="text-2xl mb-2.5">🔥</div>
+                        <div class="font-semibold text-[#3D2817] mb-1">Small Batch Roast</div>
+                        <p class="text-xs leading-snug text-[#64748B]">Rang tươi mỗi ngày theo phương pháp thủ công để giữ trọn vẹn hương vị.</p>
+                    </div>
+                    <div class="p-5 bg-[#FBF8F3] rounded-2xl border border-[#E8DCC9]/60 transition-all hover:-translate-y-0.5 hover:shadow-md">
+                        <div class="text-2xl mb-2.5">🇻🇳</div>
+                        <div class="font-semibold text-[#3D2817] mb-1">Tự hào Việt Nam</div>
+                        <p class="text-xs leading-snug text-[#64748B]">Lan tỏa văn hóa cà phê Việt và niềm tự hào về vùng đất cao nguyên.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex items-center gap-4">
+                    <a href="<?php echo esc_url( $story_permalink ); ?>" 
+                       class="inline-flex items-center gap-2 text-sm font-semibold text-[#6B4423] hover:text-[#D4A574] transition-colors group">
+                        Đọc câu chuyện đầy đủ 
+                        <span class="group-hover:translate-x-0.5 transition-transform">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
 <!-- CONTACT -->
 <?php if ( $show_contact ) : ?>
 <section id="contact" class="py-20 bg-white">
