@@ -102,13 +102,15 @@ function viet_coffee_scripts() {
     // Ensure WooCommerce cart AJAX fragments are available for mini-cart interactivity
     if ( class_exists( 'WooCommerce' ) ) {
         wp_enqueue_script( 'wc-cart-fragments' );
-        // Load checkout scripts so modal checkout form works (validation, payments, etc.)
-        wp_enqueue_script( 'wc-checkout' );
-        wp_enqueue_script( 'wc-address-i18n' );
-        wp_enqueue_script( 'wc-country-select' );
+        // Native WooCommerce AJAX add to cart (key for following WC flow)
+        wp_enqueue_script( 'wc-add-to-cart' );
 
-        // Force load WooCommerce's base styles. Without these the embedded checkout
-        // form (rendered via shortcode in modal on non-checkout page) can be unstyled/broken.
+        // Note: We no longer force-load full wc-checkout in modals.
+        // Checkout is handled on the native WooCommerce checkout page.
+        // Only load if you have custom needs on other pages.
+        // wp_enqueue_script( 'wc-checkout' );
+
+        // Base WooCommerce styles (still useful for notices, buttons on shop/cart)
         wp_enqueue_style( 'woocommerce-general' );
         wp_enqueue_style( 'woocommerce-layout' );
         wp_enqueue_style( 'woocommerce-smallscreen' );
@@ -116,8 +118,10 @@ function viet_coffee_scripts() {
     
     // Localize script
     wp_localize_script( 'viet-coffee-script', 'vietCoffee', array(
-        'ajax_url' => admin_url( 'admin-ajax.php' ),
-        'nonce' => wp_create_nonce( 'viet_coffee_nonce' ),
+        'ajax_url'     => admin_url( 'admin-ajax.php' ),
+        'nonce'        => wp_create_nonce( 'viet_coffee_nonce' ),
+        'checkout_url' => function_exists( 'wc_get_checkout_url' ) ? wc_get_checkout_url() : home_url( '/checkout' ),
+        'cart_url'     => function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart' ),
     ) );
 }
 add_action( 'wp_enqueue_scripts', 'viet_coffee_scripts' );
@@ -134,34 +138,8 @@ add_action( 'init', 'viet_coffee_woocommerce_setup' );
 // The demo import functions below remain active.
 
 // ============================================================
-// AJAX: Add to Cart
-// ============================================================
-function viet_coffee_ajax_add_to_cart() {
-    check_ajax_referer( 'viet_coffee_nonce', 'nonce' );
-
-    $product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
-
-    if ( ! $product_id ) {
-        wp_send_json_error( array( 'message' => __( 'Invalid product.', 'viet-coffee' ) ) );
-    }
-
-    $added = WC()->cart->add_to_cart( $product_id );
-
-    if ( $added ) {
-        WC()->cart->calculate_totals();
-        wp_send_json_success( array(
-            'cart_count' => WC()->cart->get_cart_contents_count(),
-            'cart_total' => WC()->cart->get_cart_total(),
-        ) );
-    } else {
-        wp_send_json_error( array( 'message' => __( 'Could not add to cart.', 'viet-coffee' ) ) );
-    }
-}
-add_action( 'wp_ajax_add_to_cart',        'viet_coffee_ajax_add_to_cart' );
-add_action( 'wp_ajax_nopriv_add_to_cart', 'viet_coffee_ajax_add_to_cart' );
-
-// ============================================================
 // AJAX: Buy Now (empty cart → add product → return checkout URL)
+// Direct-to-checkout flow (still useful for "Buy Now" buttons)
 // ============================================================
 function viet_coffee_ajax_buy_now() {
     check_ajax_referer( 'viet_coffee_nonce', 'nonce' );
@@ -263,188 +241,20 @@ function viet_coffee_buy_now_modal() {
 add_action( 'wp_footer', 'viet_coffee_buy_now_modal' );
 
 // ============================================================
-// Helper: Reliable way to get mini cart HTML (use native function, not shortcode)
+// Simple AJAX cart count (kept for header sync / manual refresh)
+// Native WooCommerce fragments also update #cart-count via filter
 // ============================================================
-function viet_coffee_get_mini_cart_html() {
-    if ( ! function_exists( 'woocommerce_mini_cart' ) || ! class_exists( 'WooCommerce' ) ) {
-        return '<p class="py-8 text-center text-gray-500">Your cart is empty or WooCommerce is not active.</p>';
-    }
-
-    // Ensure cart totals are calculated
-    if ( WC()->cart ) {
-        WC()->cart->calculate_totals();
-    }
-
-    ob_start();
-    ?>
-    <div class="widget_shopping_cart_content">
-        <?php woocommerce_mini_cart(); ?>
-    </div>
-    <?php
-    return ob_get_clean();
-}
-
-// ============================================================
-// Helper: Get full WooCommerce checkout HTML for modal
-// ============================================================
-function viet_coffee_get_checkout_html() {
-    if ( ! class_exists( 'WooCommerce' ) ) {
-        return '<p class="py-8 text-center text-gray-500">WooCommerce is not active.</p>';
-    }
-
-    if ( WC()->cart && WC()->cart->is_empty() ) {
-        return '<div class="text-center py-10">
-            <p class="text-lg mb-4">Your cart is empty.</p>
-            <button type="button" onclick="document.getElementById(\'checkout-modal\').classList.add(\'hidden\'); document.body.style.overflow=\'\'; if (typeof toggleCartModal === \'function\') toggleCartModal();" class="px-6 py-3 bg-[#4A2C1A] text-white rounded-2xl font-semibold">Return to Cart</button>
-        </div>';
-    }
-
-    // Always calculate before rendering checkout
-    WC()->cart->calculate_totals();
-
-    // Ensure shortcode is registered even in edge-case AJAX or early/late calls.
-    if ( ! shortcode_exists( 'woocommerce_checkout' ) && class_exists( 'WC_Shortcodes' ) ) {
-        WC_Shortcodes::init();
-    }
-
-    ob_start();
-
-    // Use do_shortcode for best compatibility. The standalone woocommerce_checkout() wrapper
-    // is not guaranteed in every WC load context (AJAX / footer timing / some setups).
-    // Shortcode is registered by WC_Shortcodes on init and always available when WC is active.
-    echo do_shortcode( '[woocommerce_checkout]' );
-
-    $output = ob_get_clean();
-
-    // Safety fallback: if shortcode produced almost nothing, try the class directly
-    $stripped = trim( wp_strip_all_tags( (string) $output ) );
-    if ( strlen( $stripped ) < 30 || strpos( $output, 'woocommerce-checkout' ) === false ) {
-        if ( class_exists( 'WC_Shortcode_Checkout' ) ) {
-            ob_start();
-            WC_Shortcode_Checkout::output( array() );
-            $output = ob_get_clean();
-        }
-    }
-
-    return '<div class="woocommerce-checkout-modal">' . $output . '</div>';
-}
-
-// ============================================================
-// CART MODAL (for Add to Cart clicks)
-// ============================================================
-function viet_coffee_cart_modal() {
-    // Always render the modal shell.
-    ?>
-    <div id="cart-modal" class="fixed inset-0 z-[9999] hidden" role="dialog" aria-modal="true">
-        <div id="cart-overlay" class="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"></div>
-        <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden cart-modal-panel">
-                <!-- Header -->
-                <div class="flex justify-between items-center px-6 py-4 border-b">
-                    <h2 class="text-2xl font-bold text-[#4A2C1A]">Your Cart</h2>
-                    <button id="cart-close" aria-label="Close cart"
-                            class="text-gray-400 hover:text-gray-700 text-3xl leading-none">&times;</button>
-                </div>
-
-                <!-- Mini cart content (refreshed on open) -->
-                <div id="cart-modal-content" class="p-6 text-sm">
-                    <?php echo viet_coffee_get_mini_cart_html(); ?>
-                </div>
-
-                <!-- Footer actions -->
-                <div class="border-t p-6 bg-[#f8f1e9] flex flex-col sm:flex-row gap-3">
-                    <?php if ( class_exists( 'WooCommerce' ) ) : ?>
-                        <a href="<?php echo esc_url( wc_get_cart_url() ); ?>"
-                           class="flex-1 text-center px-6 py-3 rounded-2xl border border-[#4A2C1A] text-[#4A2C1A] font-semibold hover:bg-white transition-colors">
-                            View Cart
-                        </a>
-                        <button type="button" onclick="closeCartAndOpenCheckout();"
-                           class="flex-1 text-center px-6 py-3 rounded-2xl bg-[#4A2C1A] text-white font-semibold hover:bg-black transition-colors">
-                            Checkout
-                        </button>
-                    <?php else : ?>
-                        <p class="text-sm text-gray-500">WooCommerce not active.</p>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-    <?php
-}
-add_action( 'wp_footer', 'viet_coffee_cart_modal' );
-
-// AJAX: Return fresh mini-cart HTML for the modal
-function viet_coffee_ajax_get_mini_cart() {
-    check_ajax_referer( 'viet_coffee_nonce', 'nonce' );
-
-    $html = viet_coffee_get_mini_cart_html();
-
-    wp_send_json_success( $html );
-}
-add_action( 'wp_ajax_get_mini_cart', 'viet_coffee_ajax_get_mini_cart' );
-add_action( 'wp_ajax_nopriv_get_mini_cart', 'viet_coffee_ajax_get_mini_cart' );
-
-// Simple AJAX cart count (for sync after removes in modal etc)
 function viet_coffee_ajax_get_cart_count() {
-    check_ajax_referer( 'viet_coffee_nonce', 'nonce' );
+    // Nonce optional for read-only count but kept for consistency
+    if ( isset( $_REQUEST['nonce'] ) ) {
+        check_ajax_referer( 'viet_coffee_nonce', 'nonce' );
+    }
     wp_send_json_success( array(
-        'count' => class_exists('WooCommerce') ? WC()->cart->get_cart_contents_count() : 0,
+        'count' => class_exists('WooCommerce') && WC()->cart ? WC()->cart->get_cart_contents_count() : 0,
     ) );
 }
 add_action( 'wp_ajax_get_cart_count', 'viet_coffee_ajax_get_cart_count' );
 add_action( 'wp_ajax_nopriv_get_cart_count', 'viet_coffee_ajax_get_cart_count' );
-
-// ============================================================
-// CHECKOUT MODAL + AJAX
-// ============================================================
-function viet_coffee_checkout_modal() {
-    ?>
-    <div id="checkout-modal" class="fixed inset-0 z-[9999] hidden" role="dialog" aria-modal="true">
-        <div id="checkout-overlay" class="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"></div>
-        <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-5xl overflow-hidden cart-modal-panel checkout-modal-panel">
-                <!-- Header -->
-                <div class="flex justify-between items-center px-6 py-4 border-b bg-white sticky top-0 z-10">
-                    <h2 class="text-2xl font-bold text-[#4A2C1A]">Checkout</h2>
-                    <button id="checkout-close" aria-label="Close checkout"
-                            class="text-gray-400 hover:text-gray-700 text-3xl leading-none">&times;</button>
-                </div>
-
-                <!-- Checkout content (WooCommerce form) -->
-                <div id="checkout-modal-content" class="p-6 md:p-8 text-sm overflow-auto" style="max-height: 72vh;">
-                    <?php echo viet_coffee_get_checkout_html(); ?>
-                </div>
-
-                <!-- Simple footer note / back action -->
-                <div class="border-t p-4 bg-[#f8f1e9] flex items-center justify-between text-sm">
-                    <button type="button" onclick="closeCheckoutAndOpenCart();"
-                            class="px-4 py-2 text-[#4A2C1A] hover:underline font-medium flex items-center gap-2">
-                        <span>&larr;</span> Back to Cart
-                    </button>
-                    <span class="text-gray-500 text-xs">Secure checkout powered by WooCommerce</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <?php
-}
-add_action( 'wp_footer', 'viet_coffee_checkout_modal' );
-
-// AJAX: Return fresh checkout HTML
-function viet_coffee_ajax_get_checkout() {
-    check_ajax_referer( 'viet_coffee_nonce', 'nonce' );
-
-    // Make sure cart is ready in AJAX context
-    if ( class_exists( 'WooCommerce' ) && WC()->cart ) {
-        WC()->cart->calculate_totals();
-    }
-
-    $html = viet_coffee_get_checkout_html();
-
-    wp_send_json_success( $html );
-}
-add_action( 'wp_ajax_get_checkout', 'viet_coffee_ajax_get_checkout' );
-add_action( 'wp_ajax_nopriv_get_checkout', 'viet_coffee_ajax_get_checkout' );
 
 // ============================================================
 // SEARCH MODAL (simple, invoked by header button)

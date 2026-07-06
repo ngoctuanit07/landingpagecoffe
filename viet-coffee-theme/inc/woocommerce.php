@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// Add body class for modal mode
+// Add body class for landing page styling hooks
 add_filter( 'body_class', function( $classes ) {
     if ( is_front_page() ) {
         $classes[] = 'viet-coffee-landing';
@@ -15,11 +15,12 @@ add_filter( 'body_class', function( $classes ) {
     return $classes;
 });
 
-// Ensure cart fragments always update header count
+// Ensure cart fragments always update header count (match header markup)
 add_filter( 'woocommerce_add_to_cart_fragments', function( $fragments ) {
     ob_start();
     ?>
-    <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+    <span id="cart-count"
+          class="absolute -top-0.5 -right-0.5 min-w-[17px] h-[17px] px-[4.5px] flex items-center justify-center rounded-full bg-[#4CAF50] text-white text-[9.5px] font-bold leading-none shadow-sm ring-1 ring-white/25">
         <?php echo WC()->cart->get_cart_contents_count(); ?>
     </span>
     <?php
@@ -100,10 +101,17 @@ function viet_coffee_ajax_quick_view() {
 
             <?php if ( $product->is_in_stock() ) : ?>
                 <div class="flex gap-3">
-                    <button data-add-to-cart="<?php echo esc_attr( $product->get_id() ); ?>"
-                            class="flex-1 bg-[#4A2C1A] hover:bg-black text-white py-3.5 rounded-2xl font-semibold">
+                    <?php
+                    // Native WooCommerce AJAX add to cart button (no custom modal)
+                    ?>
+                    <a href="<?php echo esc_url( $product->add_to_cart_url() ); ?>"
+                       data-quantity="1"
+                       class="flex-1 text-center bg-[#4A2C1A] hover:bg-black text-white py-3.5 rounded-2xl font-semibold add_to_cart_button ajax_add_to_cart"
+                       data-product_id="<?php echo esc_attr( $product->get_id() ); ?>"
+                       data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>"
+                       rel="nofollow">
                         <?php esc_html_e( 'Add to Cart', 'viet-coffee' ); ?>
-                    </button>
+                    </a>
                     <button onclick="buyNowQuick(<?php echo esc_attr( $product->get_id() ); ?>, '<?php echo esc_js( $product->get_name() ); ?>', '<?php echo esc_js( strip_tags( $product->get_price_html() ) ); ?>');"
                             class="flex-1 border border-[#4A2C1A] text-[#4A2C1A] py-3.5 rounded-2xl font-semibold hover:bg-[#4A2C1A] hover:text-white">
                         <?php esc_html_e( 'Buy Now', 'viet-coffee' ); ?>

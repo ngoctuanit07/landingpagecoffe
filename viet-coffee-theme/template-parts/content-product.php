@@ -61,12 +61,22 @@ global $product;
                 <?php echo wp_kses_post( $product->get_price_html() ); ?>
             </span>
             
-            <button data-add-to-cart="<?php echo esc_attr( $product->get_id() ); ?>" 
-                    class="btn-primary" 
-                    title="<?php esc_attr_e( 'Add to Cart', 'viet-coffee' ); ?>">
-                <i class="fa-solid fa-cart-plus"></i>
-                <span class="hidden sm:inline"><?php esc_html_e( 'Add', 'viet-coffee' ); ?></span>
-            </button>
+            <?php
+            // Native WooCommerce Add to Cart button (AJAX via wc-add-to-cart)
+            // This follows standard WooCommerce flow instead of custom modal.
+            $add_to_cart_url = $product->add_to_cart_url();
+            // Compact label + icon to match previous design (full text is used on single product)
+            $button_text = '<i class="fa-solid fa-cart-plus"></i><span class="hidden sm:inline ml-1">' . esc_html__( 'Add', 'viet-coffee' ) . '</span>';
+            ?>
+            <a href="<?php echo esc_url( $add_to_cart_url ); ?>"
+               data-quantity="1"
+               class="btn-primary add_to_cart_button ajax_add_to_cart"
+               data-product_id="<?php echo esc_attr( $product->get_id() ); ?>"
+               data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>"
+               aria-label="<?php echo esc_attr( $product->add_to_cart_description() ); ?>"
+               rel="nofollow">
+                <?php echo $button_text; ?>
+            </a>
         </div>
     </div>
 </div>
