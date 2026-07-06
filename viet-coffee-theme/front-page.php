@@ -12,24 +12,6 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 <!-- HERO BANNER -->
 <section class="hero-bg min-h-screen"></section>
 
-<!-- TRUST / GUARANTEE SECTION -->
-<section class="py-12 bg-white border-b border-gray-100">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <?php 
-            if ( function_exists( 'viet_coffee_get_trust_items' ) ) {
-                foreach ( viet_coffee_get_trust_items() as $item ) {
-                    echo '<div class="flex flex-col items-center text-center">';
-                    echo '<div class="text-3xl mb-3" style="color: #D4A574;"><i class="fa-solid ' . esc_attr( $item['icon'] ) . '"></i></div>';
-                    echo '<span class="font-semibold text-sm text-[#3D2817]">' . esc_html( $item['text'] ) . '</span>';
-                    echo '</div>';
-                }
-            }
-            ?>
-        </div>
-    </div>
-</section>
-
 <!-- SIGNATURE SELECTION -->
 <?php if ( $show_featured ) : ?>
 <section class="py-20 bg-white" id="featured">
