@@ -16,15 +16,17 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 <?php if ( $show_featured ) : ?>
 <section class="py-20 bg-white" id="featured">
     <div class="max-w-3xl mx-auto px-6 text-center">
-        <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;">✨ FEATURED</span>
-        <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6 mb-6" style="color: #3D2817;">Bộ sưu tập tinh chọn</h2>
+        <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;"><?php echo esc_html( get_theme_mod( 'featured_badge', '✨ FEATURED' ) ); ?></span>
+        <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6 mb-6" style="color: #3D2817;"><?php echo esc_html( get_theme_mod( 'featured_title', 'Bộ sưu tập tinh chọn' ) ); ?></h2>
         <?php
         $sig_opts = get_option( 'viet_coffee_options', array() );
         $sig_text = isset( $sig_opts['signature_text'] ) ? $sig_opts['signature_text'] : '';
+        $featured_desc = get_theme_mod( 'featured_description', 'Các sản phẩm cà phê hàng đầu được chọn cẩn thận từ các vùng cao nguyên Tây Nguyên. Roasted tươi mỗi ngày.' );
+        
         if ( $sig_text ) {
             echo '<p class="text-lg text-[#64748B] leading-relaxed">' . nl2br( esc_html( $sig_text ) ) . '</p>';
         } else {
-            echo '<p class="text-[#64748B] italic">' . esc_html__( 'Các sản phẩm cà phê hàng đầu được chọn cẩn thận từ các vùng cao nguyên Tây Nguyên. Roasted tươi mỗi ngày.', 'viet-coffee' ) . '</p>';
+            echo '<p class="text-[#64748B] italic">' . nl2br( esc_html( $featured_desc ) ) . '</p>';
         }
         ?>
     </div>
@@ -37,11 +39,11 @@ $products_cat      = get_theme_mod( 'products_category', '' );
     <div class="max-w-7xl mx-auto px-6">
         <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-12">
             <div>
-                <h2 class="text-4xl heading-font font-bold text-[#3D2817]" style="color: #3D2817;">Bộ sưu tập cà phê</h2>
-                <p class="text-[#64748B] text-lg mt-2">Những hạt cà phê chất lượng cao từ Việt Nam</p>
+                <h2 class="text-4xl heading-font font-bold text-[#3D2817]" style="color: #3D2817;"><?php echo esc_html( get_theme_mod( 'products_title', 'Bộ sưu tập cà phê' ) ); ?></h2>
+                <p class="text-[#64748B] text-lg mt-2"><?php echo esc_html( get_theme_mod( 'products_subtitle', 'Những hạt cà phê chất lượng cao từ Việt Nam' ) ); ?></p>
             </div>
             <a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" class="mt-6 md:mt-0 inline-flex items-center gap-2 text-sm font-semibold text-[#6B4423] hover:text-[#D4A574] transition-colors">
-                <?php esc_html_e( 'Xem tất cả →', 'viet-coffee' ); ?>
+                <?php echo esc_html( get_theme_mod( 'products_view_all_text', 'Xem tất cả →' ) ); ?>
             </a>
         </div>
 
@@ -126,9 +128,9 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 <section id="stories" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-12">
-            <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;">OUR HERITAGE</span>
-            <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6 mb-4" style="color: #3D2817;">Câu chuyện của chúng tôi</h2>
-            <p class="max-w-2xl mx-auto text-[#64748B] text-lg">Hành trình từ cao nguyên Việt Nam đến tách cà phê của bạn.</p>
+            <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;"><?php echo esc_html( get_theme_mod( 'story_badge', 'OUR HERITAGE' ) ); ?></span>
+            <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6 mb-4" style="color: #3D2817;"><?php echo esc_html( get_theme_mod( 'story_title', 'Câu chuyện của chúng tôi' ) ); ?></h2>
+            <p class="max-w-2xl mx-auto text-[#64748B] text-lg"><?php echo esc_html( get_theme_mod( 'story_subtitle', 'Hành trình từ cao nguyên Việt Nam đến tách cà phê của bạn.' ) ); ?></p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-10 lg:gap-14 items-center">
@@ -137,14 +139,14 @@ $products_cat      = get_theme_mod( 'products_category', '' );
                 <div class="relative rounded-3xl overflow-hidden shadow-2xl ring-1 ring-black/5">
                     <img 
                         src="<?php echo esc_url( $story_image ); ?>" 
-                        alt="Câu chuyện của chúng tôi" 
+                        alt="<?php echo esc_attr( get_theme_mod( 'story_title', 'Câu chuyện của chúng tôi' ) ); ?>" 
                         class="w-full h-auto object-cover"
                         style="aspect-ratio: 4 / 3;"
                     >
                     <div class="absolute inset-0 bg-gradient-to-t from-[#3D2817]/60 via-[#3D2817]/20 to-transparent"></div>
                     <div class="absolute bottom-6 left-6 right-6 text-white">
-                        <div class="uppercase tracking-[1.5px] text-xs opacity-75 mb-1">Tây Nguyên • Việt Nam</div>
-                        <div class="font-semibold text-lg">Nơi những hạt cà phê tốt nhất được sinh ra</div>
+                        <div class="uppercase tracking-[1.5px] text-xs opacity-75 mb-1"><?php echo esc_html( get_theme_mod( 'story_image_label', 'Tây Nguyên • Việt Nam' ) ); ?></div>
+                        <div class="font-semibold text-lg"><?php echo esc_html( get_theme_mod( 'story_image_caption', 'Nơi những hạt cà phê tốt nhất được sinh ra' ) ); ?></div>
                     </div>
                 </div>
             </div>
@@ -159,28 +161,34 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 
                 <!-- Story highlights (kept for visual appeal, consistent with page) -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+                    <?php 
+                    $highlights = array(
+                        'highlight_1' => 'Highlight 1',
+                        'highlight_2' => 'Highlight 2',
+                        'highlight_3' => 'Highlight 3',
+                    );
+                    foreach ( $highlights as $id => $label ) :
+                        $emoji = get_theme_mod( "{$id}_emoji", '' );
+                        $title = get_theme_mod( "{$id}_title", '' );
+                        $desc = get_theme_mod( "{$id}_desc", '' );
+                        if ( ! empty( $title ) ) :
+                    ?>
                     <div class="p-5 bg-[#FBF8F3] rounded-2xl border border-[#E8DCC9]/60 transition-all hover:-translate-y-0.5 hover:shadow-md">
-                        <div class="text-2xl mb-2.5">🌱</div>
-                        <div class="font-semibold text-[#3D2817] mb-1">Direct Trade</div>
-                        <p class="text-xs leading-snug text-[#64748B]">Hợp tác công bằng, giá tốt hơn cho nông dân và chất lượng vượt trội cho bạn.</p>
+                        <div class="text-2xl mb-2.5"><?php echo esc_html( $emoji ); ?></div>
+                        <div class="font-semibold text-[#3D2817] mb-1"><?php echo esc_html( $title ); ?></div>
+                        <p class="text-xs leading-snug text-[#64748B]"><?php echo esc_html( $desc ); ?></p>
                     </div>
-                    <div class="p-5 bg-[#FBF8F3] rounded-2xl border border-[#E8DCC9]/60 transition-all hover:-translate-y-0.5 hover:shadow-md">
-                        <div class="text-2xl mb-2.5">🔥</div>
-                        <div class="font-semibold text-[#3D2817] mb-1">Small Batch Roast</div>
-                        <p class="text-xs leading-snug text-[#64748B]">Rang tươi mỗi ngày theo phương pháp thủ công để giữ trọn vẹn hương vị.</p>
-                    </div>
-                    <div class="p-5 bg-[#FBF8F3] rounded-2xl border border-[#E8DCC9]/60 transition-all hover:-translate-y-0.5 hover:shadow-md">
-                        <div class="text-2xl mb-2.5">🇻🇳</div>
-                        <div class="font-semibold text-[#3D2817] mb-1">Tự hào Việt Nam</div>
-                        <p class="text-xs leading-snug text-[#64748B]">Lan tỏa văn hóa cà phê Việt và niềm tự hào về vùng đất cao nguyên.</p>
-                    </div>
+                    <?php 
+                        endif;
+                    endforeach; 
+                    ?>
                 </div>
 
                 <div class="mt-8 flex items-center gap-4">
                     <a href="<?php echo esc_url( $story_permalink ); ?>" 
                        class="inline-flex items-center gap-2 text-sm font-semibold text-[#6B4423] hover:text-[#D4A574] transition-colors group">
-                        Đọc câu chuyện đầy đủ 
-                        <span class="group-hover:translate-x-0.5 transition-transform">→</span>
+                        <?php echo esc_html( get_theme_mod( 'story_full_link_text', 'Đọc câu chuyện đầy đủ →' ) ); ?>
+                        <span class="group-hover:translate-x-0.5 transition-transform"></span>
                     </a>
                 </div>
             </div>
@@ -194,9 +202,9 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 <section id="contact" class="py-20 bg-white">
     <div class="max-w-3xl mx-auto px-6">
         <div class="text-center mb-10">
-            <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;">✉️ CONTACT</span>
-            <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6" style="color: #3D2817;">Liên hệ với chúng tôi</h2>
-            <p class="text-[#64748B] mt-3">Có câu hỏi? Chúng tôi rất vui được nghe từ bạn.</p>
+            <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;"><?php echo esc_html( get_theme_mod( 'contact_badge', '✉️ CONTACT' ) ); ?></span>
+            <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6" style="color: #3D2817;"><?php echo esc_html( get_theme_mod( 'contact_title', 'Liên hệ với chúng tôi' ) ); ?></h2>
+            <p class="text-[#64748B] mt-3"><?php echo esc_html( get_theme_mod( 'contact_subtitle', 'Có câu hỏi? Chúng tôi rất vui được nghe từ bạn.' ) ); ?></p>
         </div>
 
         <div class="max-w-xl mx-auto">

@@ -85,10 +85,92 @@ function viet_coffee_customize_register( $wp_customize ) {
     ) );
 
     // =========================================================
-    // HOMEPAGE SECTIONS
+    // FEATURED SECTION
+    // =========================================================
+    $wp_customize->add_section( 'viet_coffee_featured', array(
+        'title'    => __( 'Featured Section', 'viet-coffee' ),
+        'priority' => 32,
+    ) );
+
+    $wp_customize->add_setting( 'featured_badge', array(
+        'default'           => '✨ FEATURED',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'featured_badge', array(
+        'label'   => __( 'Badge Text', 'viet-coffee' ),
+        'section' => 'viet_coffee_featured',
+        'type'    => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'featured_title', array(
+        'default'           => 'Bộ sưu tập tinh chọn',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'featured_title', array(
+        'label'   => __( 'Section Title', 'viet-coffee' ),
+        'section' => 'viet_coffee_featured',
+        'type'    => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'featured_description', array(
+        'default'           => 'Các sản phẩm cà phê hàng đầu được chọn cẩn thận từ các vùng cao nguyên Tây Nguyên. Roasted tươi mỗi ngày.',
+        'sanitize_callback' => 'wp_kses_post',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'featured_description', array(
+        'label'   => __( 'Description', 'viet-coffee' ),
+        'section' => 'viet_coffee_featured',
+        'type'    => 'textarea',
+    ) );
+
+    // =========================================================
+    // PRODUCTS SECTION
+    // =========================================================
+    $wp_customize->add_section( 'viet_coffee_products', array(
+        'title'    => __( 'Products Section', 'viet-coffee' ),
+        'priority' => 33,
+    ) );
+
+    $wp_customize->add_setting( 'products_title', array(
+        'default'           => 'Bộ sưu tập cà phê',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'products_title', array(
+        'label'   => __( 'Section Title', 'viet-coffee' ),
+        'section' => 'viet_coffee_products',
+        'type'    => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'products_subtitle', array(
+        'default'           => 'Những hạt cà phê chất lượng cao từ Việt Nam',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'products_subtitle', array(
+        'label'   => __( 'Subtitle', 'viet-coffee' ),
+        'section' => 'viet_coffee_products',
+        'type'    => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'products_view_all_text', array(
+        'default'           => 'Xem tất cả →',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'products_view_all_text', array(
+        'label'   => __( '"View All" Button Text', 'viet-coffee' ),
+        'section' => 'viet_coffee_products',
+        'type'    => 'text',
+    ) );
+
+    // =========================================================
+    // HOMEPAGE SECTIONS (Toggle)
     // =========================================================
     $wp_customize->add_section( 'viet_coffee_homepage', array(
-        'title'    => __( 'Homepage Sections', 'viet-coffee' ),
+        'title'    => __( 'Homepage Sections (Toggle)', 'viet-coffee' ),
         'priority' => 35,
     ) );
 
@@ -164,11 +246,172 @@ function viet_coffee_customize_register( $wp_customize ) {
     ) ) );
 
     // =========================================================
-    // CONTACT & SOCIAL
+    // STORY SECTION
+    // =========================================================
+    $wp_customize->add_section( 'viet_coffee_story', array(
+        'title'       => __( 'Story Section', 'viet-coffee' ),
+        'priority'    => 37,
+        'description' => __( 'Configure the "Our Story" section displayed on homepage.', 'viet-coffee' ),
+    ) );
+
+    $wp_customize->add_setting( 'story_badge', array(
+        'default'           => 'OUR HERITAGE',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'story_badge', array(
+        'label'   => __( 'Badge Text', 'viet-coffee' ),
+        'section' => 'viet_coffee_story',
+        'type'    => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'story_title', array(
+        'default'           => 'Câu chuyện của chúng tôi',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'story_title', array(
+        'label'   => __( 'Section Title', 'viet-coffee' ),
+        'section' => 'viet_coffee_story',
+        'type'    => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'story_subtitle', array(
+        'default'           => 'Hành trình từ cao nguyên Việt Nam đến tách cà phê của bạn.',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'story_subtitle', array(
+        'label'   => __( 'Subtitle', 'viet-coffee' ),
+        'section' => 'viet_coffee_story',
+        'type'    => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'story_image_label', array(
+        'default'           => 'Tây Nguyên • Việt Nam',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'story_image_label', array(
+        'label'   => __( 'Image Label (Location)', 'viet-coffee' ),
+        'section' => 'viet_coffee_story',
+        'type'    => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'story_image_caption', array(
+        'default'           => 'Nơi những hạt cà phê tốt nhất được sinh ra',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'story_image_caption', array(
+        'label'   => __( 'Image Caption', 'viet-coffee' ),
+        'section' => 'viet_coffee_story',
+        'type'    => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'story_full_link_text', array(
+        'default'           => 'Đọc câu chuyện đầy đủ →',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'story_full_link_text', array(
+        'label'   => __( '"Read Full Story" Link Text', 'viet-coffee' ),
+        'section' => 'viet_coffee_story',
+        'type'    => 'text',
+    ) );
+
+    // Story highlights
+    $highlights = array(
+        'highlight_1' => array(
+            'emoji' => '🌱',
+            'title' => 'Direct Trade',
+            'desc'  => 'Hợp tác công bằng, giá tốt hơn cho nông dân và chất lượng vượt trội cho bạn.',
+        ),
+        'highlight_2' => array(
+            'emoji' => '🔥',
+            'title' => 'Small Batch Roast',
+            'desc'  => 'Rang tươi mỗi ngày theo phương pháp thủ công để giữ trọn vẹn hương vị.',
+        ),
+        'highlight_3' => array(
+            'emoji' => '🇻🇳',
+            'title' => 'Tự hào Việt Nam',
+            'desc'  => 'Lan tỏa văn hóa cà phê Việt và niềm tự hào về vùng đất cao nguyên.',
+        ),
+    );
+
+    foreach ( $highlights as $id => $data ) {
+        $num = substr( $id, -1 );
+
+        $wp_customize->add_setting( "{$id}_emoji", array(
+            'default'           => $data['emoji'],
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_control( "{$id}_emoji", array(
+            'label'   => sprintf( __( 'Highlight %d - Emoji', 'viet-coffee' ), $num ),
+            'section' => 'viet_coffee_story',
+            'type'    => 'text',
+        ) );
+
+        $wp_customize->add_setting( "{$id}_title", array(
+            'default'           => $data['title'],
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_control( "{$id}_title", array(
+            'label'   => sprintf( __( 'Highlight %d - Title', 'viet-coffee' ), $num ),
+            'section' => 'viet_coffee_story',
+            'type'    => 'text',
+        ) );
+
+        $wp_customize->add_setting( "{$id}_desc", array(
+            'default'           => $data['desc'],
+            'sanitize_callback' => 'wp_kses_post',
+        ) );
+        $wp_customize->add_control( "{$id}_desc", array(
+            'label'   => sprintf( __( 'Highlight %d - Description', 'viet-coffee' ), $num ),
+            'section' => 'viet_coffee_story',
+            'type'    => 'textarea',
+        ) );
+    }
+
+    // =========================================================
+    // CONTACT SECTION
     // =========================================================
     $wp_customize->add_section( 'viet_coffee_contact', array(
         'title'    => __( 'Contact & Social', 'viet-coffee' ),
         'priority' => 50,
+    ) );
+
+    $wp_customize->add_setting( 'contact_badge', array(
+        'default'           => '✉️ CONTACT',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'contact_badge', array(
+        'label'   => __( 'Badge Text', 'viet-coffee' ),
+        'section' => 'viet_coffee_contact',
+        'type'    => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'contact_title', array(
+        'default'           => 'Liên hệ với chúng tôi',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'contact_title', array(
+        'label'   => __( 'Section Title', 'viet-coffee' ),
+        'section' => 'viet_coffee_contact',
+        'type'    => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'contact_subtitle', array(
+        'default'           => 'Có câu hỏi? Chúng tôi rất vui được nghe từ bạn.',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( 'contact_subtitle', array(
+        'label'   => __( 'Subtitle', 'viet-coffee' ),
+        'section' => 'viet_coffee_contact',
+        'type'    => 'text',
     ) );
 
     $wp_customize->add_setting( 'contact_email', array(
