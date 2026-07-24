@@ -101,6 +101,76 @@ function viet_coffee_settings_page_enhanced() {
                 </form>
             </div>
 
+            <!-- Story Settings Card -->
+            <?php
+            $story_options = get_option( 'viet_coffee_options', array() );
+            $story_image   = isset( $story_options['story_image'] ) ? $story_options['story_image'] : '';
+            $story_content = isset( $story_options['story_content'] ) ? $story_options['story_content'] : '';
+            ?>
+            <div class="card" style="padding:24px; border:1px solid #e2e8f0; border-radius:12px; background:#fff; grid-column: span 1 / -1;">
+                <h2 style="margin-top:0; font-size:18px;">📖 Story Section Settings</h2>
+                <form method="post" action="options.php" style="margin-top:8px;">
+                    <?php settings_fields( 'viet_coffee_settings' ); ?>
+                    <table class="form-table" style="margin:0;">
+                        <!-- Story Image -->
+                        <tr>
+                            <th scope="row" style="padding:12px 0 12px 0; width:200px;"><label><?php esc_html_e( 'Story Image', 'viet-coffee' ); ?></label></th>
+                            <td style="padding:12px 0;">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <?php if ( $story_image ) : ?>
+                                        <img src="<?php echo esc_url( $story_image ); ?>" style="max-width:120px; height:auto; border-radius:6px; border:1px solid #e2e8f0;">
+                                    <?php endif; ?>
+                                    <input type="hidden" id="story_image" name="viet_coffee_options[story_image]" value="<?php echo esc_attr( $story_image ); ?>">
+                                    <button type="button" class="button" id="upload_story_image_btn"><?php esc_html_e( 'Upload / Choose Image', 'viet-coffee' ); ?></button>
+                                </div>
+                                <p class="description" style="margin-top:8px;"><?php esc_html_e( 'Recommended size: 1200x900px. This image appears on the left side of the Story section.', 'viet-coffee' ); ?></p>
+                            </td>
+                        </tr>
+
+                        <!-- Story Content -->
+                        <tr>
+                            <th scope="row" style="padding:12px 0;"><label for="story_content"><?php esc_html_e( 'Story Content', 'viet-coffee' ); ?></label></th>
+                            <td style="padding:12px 0;">
+                                <textarea id="story_content" name="viet_coffee_options[story_content]" rows="6"
+                                          class="large-text" style="width:100%;"
+                                          placeholder="<?php esc_attr_e( 'Enter your story description here…', 'viet-coffee' ); ?>"><?php echo esc_textarea( $story_content ); ?></textarea>
+                                <p class="description" style="margin-top:8px;"><?php esc_html_e( 'This text appears on the right side of the Story section. You can use multiple lines.', 'viet-coffee' ); ?></p>
+                            </td>
+                        </tr>
+
+                        <!-- Story Highlights -->
+                        <?php
+                        $highlight_labels = array(
+                            'highlight_1' => __( 'First Highlight', 'viet-coffee' ),
+                            'highlight_2' => __( 'Second Highlight', 'viet-coffee' ),
+                            'highlight_3' => __( 'Third Highlight', 'viet-coffee' ),
+                        );
+                        foreach ( $highlight_labels as $key => $label ) :
+                            $num = substr( $key, -1 );
+                            $emoji = isset( $story_options[ "{$key}_emoji" ] ) ? $story_options[ "{$key}_emoji" ] : '';
+                            $title = isset( $story_options[ "{$key}_title" ] ) ? $story_options[ "{$key}_title" ] : '';
+                            $desc  = isset( $story_options[ "{$key}_desc" ] ) ? $story_options[ "{$key}_desc" ] : '';
+                        ?>
+                        <tr>
+                            <th scope="row" style="padding:12px 0;"><label><?php echo esc_html( $label ); ?></label></th>
+                            <td style="padding:12px 0;">
+                                <div style="display:grid; grid-template-columns:100px 1fr; gap:12px;">
+                                    <input type="text" name="viet_coffee_options[<?php echo esc_attr( $key ); ?>_emoji]" value="<?php echo esc_attr( $emoji ); ?>"
+                                           class="small-text" style="width:100%;" placeholder="🌱" maxlength="10">
+                                    <input type="text" name="viet_coffee_options[<?php echo esc_attr( $key ); ?>_title]" value="<?php echo esc_attr( $title ); ?>"
+                                           class="regular-text" style="width:100%;" placeholder="<?php esc_attr_e( 'Highlight Title', 'viet-coffee' ); ?>">
+                                </div>
+                                <textarea name="viet_coffee_options[<?php echo esc_attr( $key ); ?>_desc]" rows="2" class="large-text" 
+                                          style="width:100%; margin-top:8px;"
+                                          placeholder="<?php esc_attr_e( 'Highlight description…', 'viet-coffee' ); ?>"><?php echo esc_textarea( $desc ); ?></textarea>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </table>
+                    <?php submit_button( __( 'Save Story Settings', 'viet-coffee' ), 'primary', 'submit', false ); ?>
+                </form>
+            </div>
+
             <!-- Demo Import Card -->
             <div class="card" style="padding:24px; border:1px solid #4A2C1A; border-radius:12px; background:#fffaf0; grid-column: span 1 / -1;">
                 <h2 style="margin-top:4px; font-size:18px; color:#4A2C1A;">📦 One-Click Demo Import</h2>
@@ -190,6 +260,38 @@ function viet_coffee_settings_page_enhanced() {
         .viet-coffee-admin .card { box-shadow: 0 1px 3px rgb(15 23 42 / 0.08); }
         .viet-coffee-admin .button-hero { height: auto; line-height: 1.1; }
     </style>
+
+    <script>
+    (function($){
+        // Media Upload for Story Image
+        let story_image_frame;
+        $('#upload_story_image_btn').on('click', function(e){
+            e.preventDefault();
+            
+            if (story_image_frame) {
+                story_image_frame.open();
+                return;
+            }
+
+            story_image_frame = wp.media({
+                title: '<?php echo esc_js( __( 'Select Story Image', 'viet-coffee' ) ); ?>',
+                button: { text: '<?php echo esc_js( __( 'Use Image', 'viet-coffee' ) ); ?>' },
+                multiple: false
+            });
+
+            story_image_frame.on('select', function(){
+                const attachment = story_image_frame.state().get('selection').first().toJSON();
+                $('#story_image').val(attachment.url);
+                
+                // Update preview
+                const preview = '<img src="' + attachment.url + '" style="max-width:120px; height:auto; border-radius:6px; border:1px solid #e2e8f0; margin-bottom:8px;">';
+                $('#upload_story_image_btn').before('<div style="margin-bottom:8px;">' + preview + '</div>');
+            });
+
+            story_image_frame.open();
+        });
+    })(jQuery);
+    </script>
     <?php
 }
 

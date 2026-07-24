@@ -246,132 +246,8 @@ function viet_coffee_customize_register( $wp_customize ) {
     ) ) );
 
     // =========================================================
-    // STORY SECTION
+    // STORY SECTION - REMOVED (now in Theme Settings > Story)
     // =========================================================
-    $wp_customize->add_section( 'viet_coffee_story', array(
-        'title'       => __( 'Story Section', 'viet-coffee' ),
-        'priority'    => 37,
-        'description' => __( 'Configure the "Our Story" section displayed on homepage.', 'viet-coffee' ),
-    ) );
-
-    $wp_customize->add_setting( 'story_badge', array(
-        'default'           => 'OUR HERITAGE',
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
-    ) );
-    $wp_customize->add_control( 'story_badge', array(
-        'label'   => __( 'Badge Text', 'viet-coffee' ),
-        'section' => 'viet_coffee_story',
-        'type'    => 'text',
-    ) );
-
-    $wp_customize->add_setting( 'story_title', array(
-        'default'           => 'Câu chuyện của chúng tôi',
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
-    ) );
-    $wp_customize->add_control( 'story_title', array(
-        'label'   => __( 'Section Title', 'viet-coffee' ),
-        'section' => 'viet_coffee_story',
-        'type'    => 'text',
-    ) );
-
-    $wp_customize->add_setting( 'story_subtitle', array(
-        'default'           => 'Hành trình từ cao nguyên Việt Nam đến tách cà phê của bạn.',
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
-    ) );
-    $wp_customize->add_control( 'story_subtitle', array(
-        'label'   => __( 'Subtitle', 'viet-coffee' ),
-        'section' => 'viet_coffee_story',
-        'type'    => 'text',
-    ) );
-
-    $wp_customize->add_setting( 'story_image_label', array(
-        'default'           => 'Tây Nguyên • Việt Nam',
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
-    ) );
-    $wp_customize->add_control( 'story_image_label', array(
-        'label'   => __( 'Image Label (Location)', 'viet-coffee' ),
-        'section' => 'viet_coffee_story',
-        'type'    => 'text',
-    ) );
-
-    $wp_customize->add_setting( 'story_image_caption', array(
-        'default'           => 'Nơi những hạt cà phê tốt nhất được sinh ra',
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
-    ) );
-    $wp_customize->add_control( 'story_image_caption', array(
-        'label'   => __( 'Image Caption', 'viet-coffee' ),
-        'section' => 'viet_coffee_story',
-        'type'    => 'text',
-    ) );
-
-    $wp_customize->add_setting( 'story_full_link_text', array(
-        'default'           => 'Đọc câu chuyện đầy đủ →',
-        'sanitize_callback' => 'sanitize_text_field',
-        'transport'         => 'postMessage',
-    ) );
-    $wp_customize->add_control( 'story_full_link_text', array(
-        'label'   => __( '"Read Full Story" Link Text', 'viet-coffee' ),
-        'section' => 'viet_coffee_story',
-        'type'    => 'text',
-    ) );
-
-    // Story highlights
-    $highlights = array(
-        'highlight_1' => array(
-            'emoji' => '🌱',
-            'title' => 'Direct Trade',
-            'desc'  => 'Hợp tác công bằng, giá tốt hơn cho nông dân và chất lượng vượt trội cho bạn.',
-        ),
-        'highlight_2' => array(
-            'emoji' => '🔥',
-            'title' => 'Small Batch Roast',
-            'desc'  => 'Rang tươi mỗi ngày theo phương pháp thủ công để giữ trọn vẹn hương vị.',
-        ),
-        'highlight_3' => array(
-            'emoji' => '🇻🇳',
-            'title' => 'Tự hào Việt Nam',
-            'desc'  => 'Lan tỏa văn hóa cà phê Việt và niềm tự hào về vùng đất cao nguyên.',
-        ),
-    );
-
-    foreach ( $highlights as $id => $data ) {
-        $num = substr( $id, -1 );
-
-        $wp_customize->add_setting( "{$id}_emoji", array(
-            'default'           => $data['emoji'],
-            'sanitize_callback' => 'sanitize_text_field',
-        ) );
-        $wp_customize->add_control( "{$id}_emoji", array(
-            'label'   => sprintf( __( 'Highlight %d - Emoji', 'viet-coffee' ), $num ),
-            'section' => 'viet_coffee_story',
-            'type'    => 'text',
-        ) );
-
-        $wp_customize->add_setting( "{$id}_title", array(
-            'default'           => $data['title'],
-            'sanitize_callback' => 'sanitize_text_field',
-        ) );
-        $wp_customize->add_control( "{$id}_title", array(
-            'label'   => sprintf( __( 'Highlight %d - Title', 'viet-coffee' ), $num ),
-            'section' => 'viet_coffee_story',
-            'type'    => 'text',
-        ) );
-
-        $wp_customize->add_setting( "{$id}_desc", array(
-            'default'           => $data['desc'],
-            'sanitize_callback' => 'wp_kses_post',
-        ) );
-        $wp_customize->add_control( "{$id}_desc", array(
-            'label'   => sprintf( __( 'Highlight %d - Description', 'viet-coffee' ), $num ),
-            'section' => 'viet_coffee_story',
-            'type'    => 'textarea',
-        ) );
-    }
 
     // =========================================================
     // CONTACT SECTION
@@ -435,7 +311,7 @@ function viet_coffee_customize_register( $wp_customize ) {
     ) );
 
     $wp_customize->add_setting( 'contact_address', array(
-        'default'           => 'Buôn Ma Thuột, Đắk Lắk, Vietnam',
+        'default'           => 'Buon Ma Thuot, Dak Lak, Vietnam',
         'sanitize_callback' => 'wp_kses_post',
     ) );
     $wp_customize->add_control( 'contact_address', array(
@@ -474,7 +350,7 @@ function viet_coffee_customize_register( $wp_customize ) {
 
     for ( $i = 1; $i <= 3; $i++ ) {
         $wp_customize->add_setting( "testimonial_{$i}_quote", array(
-            'default'           => ( $i === 1 ? 'Cà phê ngon nhất tôi từng thử. Hương vị đậm đà và giao hàng nhanh.' : '' ),
+            'default'           => ( $i === 1 ? 'The best coffee I\'ve ever tried. Rich flavor and fast shipping!' : '' ),
             'sanitize_callback' => 'wp_kses_post',
         ) );
         $wp_customize->add_control( "testimonial_{$i}_quote", array(
@@ -484,7 +360,7 @@ function viet_coffee_customize_register( $wp_customize ) {
         ) );
 
         $wp_customize->add_setting( "testimonial_{$i}_name", array(
-            'default'           => ( $i === 1 ? 'Nguyễn Thị Lan' : '' ),
+            'default'           => ( $i === 1 ? 'Sarah Johnson' : '' ),
             'sanitize_callback' => 'sanitize_text_field',
         ) );
         $wp_customize->add_control( "testimonial_{$i}_name", array(
@@ -494,7 +370,7 @@ function viet_coffee_customize_register( $wp_customize ) {
         ) );
 
         $wp_customize->add_setting( "testimonial_{$i}_role", array(
-            'default'           => ( $i === 1 ? 'Coffee Lover, Hanoi' : '' ),
+            'default'           => ( $i === 1 ? 'Coffee Lover, New York' : '' ),
             'sanitize_callback' => 'sanitize_text_field',
         ) );
         $wp_customize->add_control( "testimonial_{$i}_role", array(

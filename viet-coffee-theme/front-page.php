@@ -16,17 +16,21 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 <?php if ( $show_featured ) : ?>
 <section class="py-20 bg-white" id="featured">
     <div class="max-w-3xl mx-auto px-6 text-center">
-        <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;"><?php echo esc_html( get_theme_mod( 'featured_badge', '✨ FEATURED' ) ); ?></span>
-        <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6 mb-6" style="color: #3D2817;"><?php echo esc_html( get_theme_mod( 'featured_title', 'Bộ sưu tập tinh chọn' ) ); ?></h2>
+<h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6 mb-6" style="color: #3D2817;">Great cup of coffee shouldn't only belong behind expensive equipment.
+</h2>
         <?php
         $sig_opts = get_option( 'viet_coffee_options', array() );
         $sig_text = isset( $sig_opts['signature_text'] ) ? $sig_opts['signature_text'] : '';
-        $featured_desc = get_theme_mod( 'featured_description', 'Các sản phẩm cà phê hàng đầu được chọn cẩn thận từ các vùng cao nguyên Tây Nguyên. Roasted tươi mỗi ngày.' );
-        
         if ( $sig_text ) {
             echo '<p class="text-lg text-[#64748B] leading-relaxed">' . nl2br( esc_html( $sig_text ) ) . '</p>';
         } else {
-            echo '<p class="text-[#64748B] italic">' . nl2br( esc_html( $featured_desc ) ) . '</p>';
+            echo '<p class="text-[#64748B] italic">' . esc_html__("Sometimes it's brewed in a hotel room before sunrise.
+Sometimes beside a quiet lake.
+Sometimes at your desk between meetings.
+We created our Steeped Coffee for those moments.
+No equipment.
+No complicated brewing.Just hot water, a few quiet minutes, and a great cup of coffee—wherever life takes you.
+", 'viet-coffee' ) . '</p>';
         }
         ?>
     </div>
@@ -39,12 +43,12 @@ $products_cat      = get_theme_mod( 'products_category', '' );
     <div class="max-w-7xl mx-auto px-6">
         <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-12">
             <div>
-                <h2 class="text-4xl heading-font font-bold text-[#3D2817]" style="color: #3D2817;"><?php echo esc_html( get_theme_mod( 'products_title', 'Bộ sưu tập cà phê' ) ); ?></h2>
-                <p class="text-[#64748B] text-lg mt-2"><?php echo esc_html( get_theme_mod( 'products_subtitle', 'Những hạt cà phê chất lượng cao từ Việt Nam' ) ); ?></p>
+                <h2 class="text-4xl heading-font font-bold text-[#3D2817]" style="color: #3D2817;">Discover A Fresh Perspective on Vietnamese Coffee With Us </h2>
+                <p class="text-[#64748B] text-lg mt-2">Our farmers grow it. Our farmers process it. We craft it.</p>
             </div>
-            <a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" class="mt-6 md:mt-0 inline-flex items-center gap-2 text-sm font-semibold text-[#6B4423] hover:text-[#D4A574] transition-colors">
-                <?php echo esc_html( get_theme_mod( 'products_view_all_text', 'Xem tất cả →' ) ); ?>
-            </a>
+            <!-- <a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>" class="mt-6 md:mt-0 inline-flex items-center gap-2 text-sm font-semibold text-[#6B4423] hover:text-[#D4A574] transition-colors">
+                <?php //esc_html_e( 'Xem tất cả →', 'viet-coffee' ); ?>
+            </a> -->
         </div>
 
         <?php
@@ -75,10 +79,10 @@ $products_cat      = get_theme_mod( 'products_category', '' );
                 echo '</div>';
                 wp_reset_postdata();
             } else {
-                echo '<div class="text-center py-12"><p class="text-[#64748B] text-lg">' . esc_html__( 'Chưa có sản phẩm. Hãy thêm sản phẩm trong WooCommerce.', 'viet-coffee' ) . '</p></div>';
+                echo '<div class="text-center py-12"><p class="text-[#64748B] text-lg">' . esc_html__( 'No products yet. Please add products in WooCommerce.', 'viet-coffee' ) . '</p></div>';
             }
         } else {
-            echo '<p class="text-center text-[#64748B]">' . esc_html__( 'WooCommerce là bắt buộc cho shop.', 'viet-coffee' ) . '</p>';
+            echo '<p class="text-center text-[#64748B]">' . esc_html__( 'WooCommerce is required for the shop.', 'viet-coffee' ) . '</p>';
         }
         ?>
     </div>
@@ -88,107 +92,70 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 <!-- OUR STORY / CÂU CHUYỆN (lấy từ WordPress Page) -->
 <?php if ( $show_stories ) : ?>
 <?php
-    // Fetch content dynamically from the "our-story" WordPress page
-    $story_page = get_page_by_path( 'our-story' );
+    $story_options     = get_option( 'viet_coffee_options', array() );
+    $story_image       = isset( $story_options['story_image'] ) ? $story_options['story_image'] : 'https://picsum.photos/id/1016/1200/900';
+    $story_content     = isset( $story_options['story_content'] ) ? $story_options['story_content'] : 'A journey from the highlands of Vietnam to your coffee cup. We are committed to bringing you the finest coffee beans with our daily fresh roasting process.';
+    
+    // Get the "our-story" page for the link
+    $story_page        = get_page_by_path( 'our-story' );
     $story_permalink   = home_url( '/our-story' );
-    $story_image       = 'https://picsum.photos/id/1016/1200/900';
-    $story_intro       = 'Chúng tôi là những người con của đất Việt, đam mê mang tinh hoa cà phê Việt Nam đến với thế giới.';
-    $story_support     = 'Chúng tôi làm việc trực tiếp với những nông dân tại Buôn Ma Thuột, Đà Lạt và các vùng cao nguyên trứ danh khác. Mỗi hạt cà phê đều được chọn lọc kỹ lưỡng.';
-
     if ( $story_page ) {
         $story_permalink = get_permalink( $story_page->ID );
-
-        // Use featured image from the page if set
-        $featured_img = get_the_post_thumbnail_url( $story_page->ID, 'large' );
-        if ( $featured_img ) {
-            $story_image = $featured_img;
-        }
-
-        // Extract text from the page content (first two paragraphs)
-        $raw = $story_page->post_content;
-
-        $paragraphs = [];
-        if ( preg_match_all( '/<p[^>]*>(.*?)<\/p>/is', $raw, $matches ) ) {
-            foreach ( $matches[1] as $p ) {
-                $clean = trim( wp_strip_all_tags( $p ) );
-                if ( strlen( $clean ) > 20 ) {
-                    $paragraphs[] = $clean;
-                }
-            }
-        }
-
-        if ( ! empty( $paragraphs[0] ) ) {
-            $story_intro = wp_trim_words( $paragraphs[0], 32, '...' );
-        }
-        if ( ! empty( $paragraphs[1] ) ) {
-            $story_support = wp_trim_words( $paragraphs[1], 28, '...' );
-        }
     }
 ?>
 <section id="stories" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-12">
-            <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;"><?php echo esc_html( get_theme_mod( 'story_badge', 'OUR HERITAGE' ) ); ?></span>
-            <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6 mb-4" style="color: #3D2817;"><?php echo esc_html( get_theme_mod( 'story_title', 'Câu chuyện của chúng tôi' ) ); ?></h2>
-            <p class="max-w-2xl mx-auto text-[#64748B] text-lg"><?php echo esc_html( get_theme_mod( 'story_subtitle', 'Hành trình từ cao nguyên Việt Nam đến tách cà phê của bạn.' ) ); ?></p>
+            <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;">OUR HERITAGE</span>
+            <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6 mb-4" style="color: #3D2817;">Our Story</h2>
         </div>
-
+        
         <div class="grid md:grid-cols-2 gap-10 lg:gap-14 items-center">
-            <!-- Visual (from page featured image) -->
+            <!-- Image (Left) -->
             <div class="order-2 md:order-1">
                 <div class="relative rounded-3xl overflow-hidden shadow-2xl ring-1 ring-black/5">
                     <img 
                         src="<?php echo esc_url( $story_image ); ?>" 
-                        alt="<?php echo esc_attr( get_theme_mod( 'story_title', 'Câu chuyện của chúng tôi' ) ); ?>" 
+                        alt="Câu chuyện của chúng tôi" 
                         class="w-full h-auto object-cover"
                         style="aspect-ratio: 4 / 3;"
                     >
                     <div class="absolute inset-0 bg-gradient-to-t from-[#3D2817]/60 via-[#3D2817]/20 to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 right-6 text-white">
-                        <div class="uppercase tracking-[1.5px] text-xs opacity-75 mb-1"><?php echo esc_html( get_theme_mod( 'story_image_label', 'Tây Nguyên • Việt Nam' ) ); ?></div>
-                        <div class="font-semibold text-lg"><?php echo esc_html( get_theme_mod( 'story_image_caption', 'Nơi những hạt cà phê tốt nhất được sinh ra' ) ); ?></div>
-                    </div>
                 </div>
             </div>
-
-            <!-- Content (pulled from page) -->
+            
+            <!-- Content (Right) -->
             <div class="order-1 md:order-2">
                 <div class="text-[#2D2D2D] space-y-4">
-                    <p class="text-[17px] leading-relaxed"><?php echo esc_html( $story_intro ); ?></p>
-                    
-                    <p class="text-[#64748B]"><?php echo esc_html( $story_support ); ?></p>
+                    <p class="text-[17px] leading-relaxed"><?php echo wp_kses_post( nl2br( $story_content ) ); ?></p>
                 </div>
 
-                <!-- Story highlights (kept for visual appeal, consistent with page) -->
+                <!-- Story highlights -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-                    <?php 
-                    $highlights = array(
-                        'highlight_1' => 'Highlight 1',
-                        'highlight_2' => 'Highlight 2',
-                        'highlight_3' => 'Highlight 3',
-                    );
-                    foreach ( $highlights as $id => $label ) :
-                        $emoji = get_theme_mod( "{$id}_emoji", '' );
-                        $title = get_theme_mod( "{$id}_title", '' );
-                        $desc = get_theme_mod( "{$id}_desc", '' );
-                        if ( ! empty( $title ) ) :
-                    ?>
-                    <div class="p-5 bg-[#FBF8F3] rounded-2xl border border-[#E8DCC9]/60 transition-all hover:-translate-y-0.5 hover:shadow-md">
-                        <div class="text-2xl mb-2.5"><?php echo esc_html( $emoji ); ?></div>
-                        <div class="font-semibold text-[#3D2817] mb-1"><?php echo esc_html( $title ); ?></div>
-                        <p class="text-xs leading-snug text-[#64748B]"><?php echo esc_html( $desc ); ?></p>
-                    </div>
-                    <?php 
-                        endif;
-                    endforeach; 
+                    <?php
+                    for ( $i = 1; $i <= 3; $i++ ) {
+                        $emoji = isset( $story_options[ "highlight_{$i}_emoji" ] ) ? $story_options[ "highlight_{$i}_emoji" ] : '';
+                        $title = isset( $story_options[ "highlight_{$i}_title" ] ) ? $story_options[ "highlight_{$i}_title" ] : '';
+                        $desc  = isset( $story_options[ "highlight_{$i}_desc" ] ) ? $story_options[ "highlight_{$i}_desc" ] : '';
+                        
+                        if ( ! empty( $emoji ) || ! empty( $title ) ) {
+                            ?>
+                            <div class="p-5 bg-[#FBF8F3] rounded-2xl border border-[#E8DCC9]/60 transition-all hover:-translate-y-0.5 hover:shadow-md">
+                                <div class="text-2xl mb-2.5"><?php echo esc_html( $emoji ); ?></div>
+                                <div class="font-semibold text-[#3D2817] mb-1"><?php echo esc_html( $title ); ?></div>
+                                <p class="text-sm text-[#64748B]"><?php echo esc_html( $desc ); ?></p>
+                            </div>
+                            <?php
+                        }
+                    }
                     ?>
                 </div>
 
                 <div class="mt-8 flex items-center gap-4">
                     <a href="<?php echo esc_url( $story_permalink ); ?>" 
                        class="inline-flex items-center gap-2 text-sm font-semibold text-[#6B4423] hover:text-[#D4A574] transition-colors group">
-                        <?php echo esc_html( get_theme_mod( 'story_full_link_text', 'Đọc câu chuyện đầy đủ →' ) ); ?>
-                        <span class="group-hover:translate-x-0.5 transition-transform"></span>
+                        Read Full Story
+                        <span class="group-hover:translate-x-0.5 transition-transform">→</span>
                     </a>
                 </div>
             </div>
@@ -202,9 +169,9 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 <section id="contact" class="py-20 bg-white">
     <div class="max-w-3xl mx-auto px-6">
         <div class="text-center mb-10">
-            <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;"><?php echo esc_html( get_theme_mod( 'contact_badge', '✉️ CONTACT' ) ); ?></span>
-            <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6" style="color: #3D2817;"><?php echo esc_html( get_theme_mod( 'contact_title', 'Liên hệ với chúng tôi' ) ); ?></h2>
-            <p class="text-[#64748B] mt-3"><?php echo esc_html( get_theme_mod( 'contact_subtitle', 'Có câu hỏi? Chúng tôi rất vui được nghe từ bạn.' ) ); ?></p>
+            <span class="inline-block px-6 py-2 bg-[#FBF8F3] text-[#D4A574] rounded-full text-sm font-medium tracking-wide" style="background-color: #FBF8F3; color: #D4A574;">✉️ CONTACT</span>
+            <h2 class="text-4xl md:text-5xl heading-font font-bold text-[#3D2817] mt-6" style="color: #3D2817;">Get In Touch</h2>
+            <p class="text-[#64748B] mt-3">Have questions? We'd love to hear from you.</p>
         </div>
 
         <div class="max-w-xl mx-auto">
@@ -217,8 +184,8 @@ $products_cat      = get_theme_mod( 'products_category', '' );
             } else {
                 // Fallback message + link to Customizer
                 echo '<div class="bg-[#FBF8F3] border border-[#E8DCC9] rounded-2xl p-8 text-center">';
-                echo '<p class="mb-3 text-[#64748B]">' . esc_html__( 'Cài đặt Contact Form 7 hoặc sử dụng biểu mẫu tích hợp.', 'viet-coffee' ) . '</p>';
-                echo '<a href="' . esc_url( admin_url( 'customize.php' ) ) . '" class="text-[#6B4423] underline font-semibold">' . esc_html__( 'Hoặc chỉnh sửa thông tin liên hệ trong Customizer', 'viet-coffee' ) . '</a>';
+                echo '<p class="mb-3 text-[#64748B]">' . esc_html__( 'Install Contact Form 7 or use the built-in form.', 'viet-coffee' ) . '</p>';
+                echo '<a href="' . esc_url( admin_url( 'customize.php' ) ) . '" class="text-[#6B4423] underline font-semibold">' . esc_html__( 'Or edit contact information in the Customizer', 'viet-coffee' ) . '</a>';
                 echo '</div>';
             }
             ?>
@@ -227,11 +194,11 @@ $products_cat      = get_theme_mod( 'products_category', '' );
                 <?php 
                 $email = get_theme_mod( 'contact_email', 'hello@vietcoffee.com' );
                 $phone = get_theme_mod( 'contact_phone', '' );
-                $addr  = get_theme_mod( 'contact_address', 'Buôn Ma Thuột, Việt Nam' );
+                $addr  = get_theme_mod( 'contact_address', 'Buon Ma Thuot, Vietnam' );
                 ?>
                 <?php if ( $email ) : ?><div><strong>Email:</strong> <a href="mailto:<?php echo esc_attr( $email ); ?>" class="text-[#6B4423]"><?php echo esc_html( $email ); ?></a></div><?php endif; ?>
-                <?php if ( $phone ) : ?><div><strong>Điện thoại:</strong> <?php echo esc_html( $phone ); ?></div><?php endif; ?>
-                <?php if ( $addr ) : ?><div><strong>Địa chỉ:</strong> <?php echo esc_html( $addr ); ?></div><?php endif; ?>
+                <?php if ( $phone ) : ?><div><strong>Phone:</strong> <?php echo esc_html( $phone ); ?></div><?php endif; ?>
+                <?php if ( $addr ) : ?><div><strong>Address:</strong> <?php echo esc_html( $addr ); ?></div><?php endif; ?>
             </div>
         </div>
     </div>
