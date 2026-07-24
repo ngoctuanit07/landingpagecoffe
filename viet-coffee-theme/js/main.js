@@ -6,6 +6,36 @@
 
 'use strict';
 
+// Responsive, keyboard-accessible hero carousel.
+document.querySelectorAll('.hero-slider').forEach(function(slider) {
+    const slides = Array.from(slider.querySelectorAll('.hero-slide'));
+    const dots = Array.from(slider.querySelectorAll('.hero-dots button'));
+    if (slides.length < 2) return;
+    let current = 0;
+    let timer;
+    const show = function(index) {
+        current = (index + slides.length) % slides.length;
+        slides.forEach((slide, i) => slide.classList.toggle('is-active', i === current));
+        dots.forEach((dot, i) => dot.classList.toggle('is-active', i === current));
+    };
+    const start = function() {
+        window.clearInterval(timer);
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            timer = window.setInterval(() => show(current + 1), 6000);
+        }
+    };
+    slider.querySelector('.hero-prev').addEventListener('click', () => { show(current - 1); start(); });
+    slider.querySelector('.hero-next').addEventListener('click', () => { show(current + 1); start(); });
+    dots.forEach((dot, i) => dot.addEventListener('click', () => { show(i); start(); }));
+    slider.addEventListener('mouseenter', () => window.clearInterval(timer));
+    slider.addEventListener('mouseleave', start);
+    slider.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft') show(current - 1);
+        if (e.key === 'ArrowRight') show(current + 1);
+    });
+    start();
+});
+
 // ============================================================
 // HEADER SCROLL EFFECT
 // ============================================================

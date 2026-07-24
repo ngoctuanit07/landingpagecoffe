@@ -25,13 +25,6 @@
             font-family: 'Playfair Display', serif;
         }
 
-        .hero-bg {
-            background-image: linear-gradient(rgba(61, 40, 23, 0.55), rgba(61, 40, 23, 0.55)), url('<?php echo get_theme_mod('hero_background', 'https://picsum.photos/id/1015/2000/1200'); ?>');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-
         .coffee-card {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }

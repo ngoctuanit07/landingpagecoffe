@@ -10,7 +10,36 @@ $products_cat      = get_theme_mod( 'products_category', '' );
 ?>
 
 <!-- HERO BANNER -->
-<section class="hero-bg min-h-screen"></section>
+<?php
+$hero_options = get_option( 'viet_coffee_options', array() );
+$hero_ids = isset( $hero_options['hero_slider_ids'] ) ? array_filter( array_map( 'absint', (array) $hero_options['hero_slider_ids'] ) ) : array();
+$hero_images = array();
+foreach ( $hero_ids as $hero_id ) {
+    $hero_url = wp_get_attachment_image_url( $hero_id, 'full' );
+    if ( $hero_url ) { $hero_images[] = $hero_url; }
+}
+if ( ! $hero_images ) {
+    $hero_images[] = get_theme_mod( 'hero_background', 'https://picsum.photos/id/1016/2000/1200' );
+}
+?>
+<main id="main-content"><section class="hero-bg hero-slider min-h-screen" aria-roledescription="carousel" aria-label="<?php esc_attr_e( 'Homepage hero', 'viet-coffee' ); ?>">
+    <div class="hero-slides" aria-live="polite">
+        <?php foreach ( $hero_images as $index => $hero_url ) : ?>
+            <div class="hero-slide<?php echo 0 === $index ? ' is-active' : ''; ?>" style="background-image:url('<?php echo esc_url( $hero_url ); ?>')" role="group" aria-label="<?php echo esc_attr( sprintf( __( 'Slide %1$d of %2$d', 'viet-coffee' ), $index + 1, count( $hero_images ) ) ); ?>"></div>
+        <?php endforeach; ?>
+    </div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-content">
+        <h1><?php echo wp_kses_post( get_theme_mod( 'hero_title', 'AUTHENTIC VIETNAMESE COFFEE' ) ); ?></h1>
+        <p class="hero-subtitle"><?php echo wp_kses_post( get_theme_mod( 'hero_subtitle', '' ) ); ?></p>
+        <a class="hero-cta" href="<?php echo esc_url( get_theme_mod( 'hero_button_link', '#products' ) ); ?>"><?php echo esc_html( get_theme_mod( 'hero_button_text', 'SHOP OUR COLLECTION' ) ); ?></a>
+    </div>
+    <?php if ( count( $hero_images ) > 1 ) : ?>
+        <button class="hero-control hero-prev" type="button" aria-label="<?php esc_attr_e( 'Previous slide', 'viet-coffee' ); ?>">&#10094;</button>
+        <button class="hero-control hero-next" type="button" aria-label="<?php esc_attr_e( 'Next slide', 'viet-coffee' ); ?>">&#10095;</button>
+        <div class="hero-dots"><?php foreach ( $hero_images as $index => $_ ) : ?><button type="button" class="<?php echo 0 === $index ? 'is-active' : ''; ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Go to slide %d', 'viet-coffee' ), $index + 1 ) ); ?>"></button><?php endforeach; ?></div>
+    <?php endif; ?>
+</section>
 
 <!-- SIGNATURE SELECTION -->
 <?php if ( $show_featured ) : ?>
@@ -96,12 +125,6 @@ No complicated brewing.Just hot water, a few quiet minutes, and a great cup of c
     $story_image       = isset( $story_options['story_image'] ) ? $story_options['story_image'] : 'https://picsum.photos/id/1016/1200/900';
     $story_content     = isset( $story_options['story_content'] ) ? $story_options['story_content'] : 'A journey from the highlands of Vietnam to your coffee cup. We are committed to bringing you the finest coffee beans with our daily fresh roasting process.';
     
-    // Get the "our-story" page for the link
-    $story_page        = get_page_by_path( 'our-story' );
-    $story_permalink   = home_url( '/our-story' );
-    if ( $story_page ) {
-        $story_permalink = get_permalink( $story_page->ID );
-    }
 ?>
 <section id="stories" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-6">
@@ -126,8 +149,8 @@ No complicated brewing.Just hot water, a few quiet minutes, and a great cup of c
             
             <!-- Content (Right) -->
             <div class="order-1 md:order-2">
-                <div class="text-[#2D2D2D] space-y-4">
-                    <p class="text-[17px] leading-relaxed"><?php echo wp_kses_post( nl2br( $story_content ) ); ?></p>
+                <div class="story-rich-content text-[#2D2D2D]">
+                    <?php echo apply_filters( 'the_content', $story_content ); ?>
                 </div>
 
                 <!-- Story highlights -->
@@ -151,13 +174,6 @@ No complicated brewing.Just hot water, a few quiet minutes, and a great cup of c
                     ?>
                 </div>
 
-                <div class="mt-8 flex items-center gap-4">
-                    <a href="<?php echo esc_url( $story_permalink ); ?>" 
-                       class="inline-flex items-center gap-2 text-sm font-semibold text-[#6B4423] hover:text-[#D4A574] transition-colors group">
-                        Read Full Story
-                        <span class="group-hover:translate-x-0.5 transition-transform">→</span>
-                    </a>
-                </div>
             </div>
         </div>
     </div>
@@ -205,4 +221,5 @@ No complicated brewing.Just hot water, a few quiet minutes, and a great cup of c
 </section>
 <?php endif; ?>
 
+</main>
 <?php get_footer(); ?>

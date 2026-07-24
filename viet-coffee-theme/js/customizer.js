@@ -32,7 +32,7 @@
     // Update background image in preview
     wp.customize( 'hero_background', function( value ) {
         value.bind( function( newval ) {
-            $( '.hero-bg' ).css( 'background-image', 'linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(' + newval + ')' );
+            $( '.hero-bg .hero-slide' ).first().css( 'background-image', 'url("' + newval + '")' );
         } );
     } );
 

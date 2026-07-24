@@ -8,7 +8,9 @@ global $product;
     <!-- Product Image Section -->
     <div class="coffee-card-image">
         <div class="relative w-full h-full">
-            <?php echo $product->get_image( 'coffee-card', array( 'class' => 'w-full h-full object-cover' ) ); ?>
+            <a href="<?php echo esc_url( $product->get_permalink() ); ?>" aria-label="<?php echo esc_attr( $product->get_name() ); ?>">
+                <?php echo $product->get_image( 'coffee-card', array( 'class' => 'w-full h-full object-cover' ) ); ?>
+            </a>
             
             <!-- Product Badge -->
             <?php if ( $product->is_on_sale() ) : ?>
@@ -70,7 +72,7 @@ global $product;
             ?>
             <a href="<?php echo esc_url( $add_to_cart_url ); ?>"
                data-quantity="1"
-               class="btn-primary add_to_cart_button ajax_add_to_cart"
+               class="btn-primary add_to_cart_button product_type_<?php echo esc_attr( $product->get_type() ); ?><?php echo $product->supports( 'ajax_add_to_cart' ) ? ' ajax_add_to_cart' : ''; ?>"
                data-product_id="<?php echo esc_attr( $product->get_id() ); ?>"
                data-product_sku="<?php echo esc_attr( $product->get_sku() ); ?>"
                aria-label="<?php echo esc_attr( $product->add_to_cart_description() ); ?>"

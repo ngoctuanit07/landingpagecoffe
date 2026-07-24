@@ -1,18 +1,17 @@
 <?php
-/**
- * Single Product custom layout
- */
 defined( 'ABSPATH' ) || exit;
-
-get_header( 'shop' ); ?>
-
-<div class="max-w-7xl mx-auto px-6 py-12">
-    <?php
-    while ( have_posts() ) :
-        the_post();
-        wc_get_template_part( 'content', 'single-product' );
-    endwhile;
-    ?>
+global $product;
+do_action( 'woocommerce_before_single_product' );
+if ( post_password_required() ) {
+    echo get_the_password_form();
+    return;
+}
+?>
+<div id="product-<?php the_ID(); ?>" <?php wc_product_class( 'viet-coffee-single-product', $product ); ?>>
+    <div class="viet-product-main">
+        <div class="viet-product-gallery"><?php do_action( 'woocommerce_before_single_product_summary' ); ?></div>
+        <div class="summary entry-summary viet-product-summary"><?php do_action( 'woocommerce_single_product_summary' ); ?></div>
+    </div>
+    <?php do_action( 'woocommerce_after_single_product_summary' ); ?>
 </div>
-
-<?php get_footer( 'shop' ); ?>
+<?php do_action( 'woocommerce_after_single_product' ); ?>

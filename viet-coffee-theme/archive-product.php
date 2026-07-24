@@ -4,7 +4,7 @@
  */
 get_header(); ?>
 
-<section class="py-20 bg-[#f8f1e9]">
+<main id="main-content"><section class="pt-32 pb-20 bg-[#f8f1e9]">
     <div class="max-w-7xl mx-auto px-6">
         <h1 class="text-4xl heading-font font-bold text-[#4A2C1A] mb-8">Our Collection</h1>
         <?php if ( woocommerce_product_loop() ) : ?>
@@ -15,6 +15,6 @@ get_header(); ?>
             </div>
         <?php endif; ?>
     </div>
-</section>
+</section></main>
 
 <?php get_footer(); ?>

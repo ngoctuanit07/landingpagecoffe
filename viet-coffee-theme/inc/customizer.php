@@ -437,9 +437,8 @@ function viet_coffee_customizer_css() {
         .text-amber-700, .text-amber-600, .text-amber-800 {
             color: var(--vc-accent) !important;
         }
-        .hero-bg {
-            background-image: linear-gradient(rgba(0,0,0, <?php echo esc_attr( $overlay ); ?>), rgba(0,0,0, <?php echo esc_attr( $overlay ); ?>)),
-                              url('<?php echo esc_url( get_theme_mod( 'hero_background', 'https://picsum.photos/id/1016/2000/1200' ) ); ?>');
+        .hero-bg .hero-overlay {
+            background: rgba(0,0,0, <?php echo esc_attr( $overlay ); ?>);
         }
         .coffee-card:hover {
             box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);

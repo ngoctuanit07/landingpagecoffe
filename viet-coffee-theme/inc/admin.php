@@ -17,6 +17,7 @@ function viet_coffee_settings_page_enhanced() {
     $featured_id = isset( $options['featured_product_id'] ) ? $options['featured_product_id'] : '';
     $imported = get_option( 'viet_coffee_demo_imported', false );
     $has_woo = class_exists( 'WooCommerce' );
+    $hero_ids = isset( $options['hero_slider_ids'] ) ? array_filter( array_map( 'absint', (array) $options['hero_slider_ids'] ) ) : array();
     ?>
     <div class="wrap viet-coffee-admin">
         <h1 style="margin-bottom:8px;">☕ Viet Coffee Theme</h1>
@@ -25,6 +26,30 @@ function viet_coffee_settings_page_enhanced() {
         </p>
 
         <div class="viet-coffee-cards" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:24px; margin-top:24px;">
+
+            <div class="card" style="padding:24px; border:1px solid #e2e8f0; border-radius:12px; background:#fff; grid-column:1/-1;">
+                <h2 style="margin-top:0;"><?php esc_html_e( 'Hero Background Slider', 'viet-coffee' ); ?></h2>
+                <p class="description"><?php esc_html_e( 'Add images, drag to reorder, remove or replace images, then save.', 'viet-coffee' ); ?></p>
+                <form method="post" action="options.php">
+                    <?php settings_fields( 'viet_coffee_settings' ); ?>
+                    <input type="hidden" name="viet_coffee_slider_form" value="1">
+                    <ul id="hero-slider-images" style="display:flex;flex-wrap:wrap;gap:14px;margin:18px 0;">
+                        <?php foreach ( $hero_ids as $image_id ) :
+                            $thumb = wp_get_attachment_image_url( $image_id, 'thumbnail' );
+                            if ( ! $thumb ) { continue; }
+                        ?>
+                            <li class="hero-slide-item" style="cursor:move;background:#f8fafc;border:1px solid #cbd5e1;padding:8px;border-radius:8px;">
+                                <img src="<?php echo esc_url( $thumb ); ?>" alt="" style="display:block;width:150px;height:95px;object-fit:cover;border-radius:5px;">
+                                <input type="hidden" name="viet_coffee_options[hero_slider_ids][]" value="<?php echo esc_attr( $image_id ); ?>">
+                                <button type="button" class="button-link-delete hero-slide-remove" style="display:block;margin:7px auto 0;"><?php esc_html_e( 'Remove', 'viet-coffee' ); ?></button>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <p id="hero-slider-empty" <?php echo $hero_ids ? 'style="display:none"' : ''; ?>><?php esc_html_e( 'No slider images yet. The legacy background image is used as fallback.', 'viet-coffee' ); ?></p>
+                    <button type="button" class="button" id="hero-slider-add"><?php esc_html_e( 'Add Images', 'viet-coffee' ); ?></button>
+                    <?php submit_button( __( 'Save Slider', 'viet-coffee' ), 'primary', 'submit', false ); ?>
+                </form>
+            </div>
 
             <!-- Quick Actions Card -->
             <div class="card" style="padding:24px; border:1px solid #e2e8f0; border-radius:12px; background:#fff;">
@@ -131,10 +156,12 @@ function viet_coffee_settings_page_enhanced() {
                         <tr>
                             <th scope="row" style="padding:12px 0;"><label for="story_content"><?php esc_html_e( 'Story Content', 'viet-coffee' ); ?></label></th>
                             <td style="padding:12px 0;">
-                                <textarea id="story_content" name="viet_coffee_options[story_content]" rows="6"
-                                          class="large-text" style="width:100%;"
-                                          placeholder="<?php esc_attr_e( 'Enter your story description here…', 'viet-coffee' ); ?>"><?php echo esc_textarea( $story_content ); ?></textarea>
-                                <p class="description" style="margin-top:8px;"><?php esc_html_e( 'This text appears on the right side of the Story section. You can use multiple lines.', 'viet-coffee' ); ?></p>
+                                <?php wp_editor( $story_content, 'story_content', array(
+                                    'textarea_name' => 'viet_coffee_options[story_content]',
+                                    'textarea_rows' => 12,
+                                    'media_buttons' => true,
+                                ) ); ?>
+                                <p class="description" style="margin-top:8px;"><?php esc_html_e( 'The complete formatted content is displayed on the homepage. Headings, paragraphs, lists, links and images are supported.', 'viet-coffee' ); ?></p>
                             </td>
                         </tr>
 
@@ -263,6 +290,39 @@ function viet_coffee_settings_page_enhanced() {
 
     <script>
     (function($){
+        const $slides = $('#hero-slider-images');
+        $slides.sortable({ items: '.hero-slide-item' });
+        $slides.on('click', '.hero-slide-remove', function(){
+            $(this).closest('.hero-slide-item').remove();
+            $('#hero-slider-empty').toggle(!$slides.children().length);
+        });
+        let heroFrame;
+        $('#hero-slider-add').on('click', function(e){
+            e.preventDefault();
+            if (!heroFrame) {
+                heroFrame = wp.media({
+                    title: '<?php echo esc_js( __( 'Choose hero slider images', 'viet-coffee' ) ); ?>',
+                    button: { text: '<?php echo esc_js( __( 'Add to slider', 'viet-coffee' ) ); ?>' },
+                    library: { type: 'image' },
+                    multiple: 'add'
+                });
+                heroFrame.on('select', function(){
+                    heroFrame.state().get('selection').each(function(model){
+                        const image = model.toJSON();
+                        const src = image.sizes && image.sizes.thumbnail ? image.sizes.thumbnail.url : image.url;
+                        $slides.append(
+                            $('<li class="hero-slide-item" style="cursor:move;background:#f8fafc;border:1px solid #cbd5e1;padding:8px;border-radius:8px;">')
+                                .append($('<img alt="" style="display:block;width:150px;height:95px;object-fit:cover;border-radius:5px;">').attr('src', src))
+                                .append($('<input type="hidden" name="viet_coffee_options[hero_slider_ids][]">').val(image.id))
+                                .append('<button type="button" class="button-link-delete hero-slide-remove" style="display:block;margin:7px auto 0;"><?php echo esc_js( __( 'Remove', 'viet-coffee' ) ); ?></button>')
+                        );
+                    });
+                    $('#hero-slider-empty').hide();
+                });
+            }
+            heroFrame.open();
+        });
+
         // Media Upload for Story Image
         let story_image_frame;
         $('#upload_story_image_btn').on('click', function(e){
@@ -315,6 +375,31 @@ add_action( 'admin_menu', function() {
 
 // Keep the settings registration (for featured product)
 function viet_coffee_settings_init_enhanced() {
-    register_setting( 'viet_coffee_settings', 'viet_coffee_options' );
+    register_setting( 'viet_coffee_settings', 'viet_coffee_options', array( 'sanitize_callback' => 'viet_coffee_sanitize_options' ) );
 }
 add_action( 'admin_init', 'viet_coffee_settings_init_enhanced' );
+
+function viet_coffee_sanitize_options( $input ) {
+    $clean = get_option( 'viet_coffee_options', array() );
+    $input = is_array( $input ) ? $input : array();
+    if ( isset( $_POST['viet_coffee_slider_form'] ) ) {
+        $clean['hero_slider_ids'] = isset( $input['hero_slider_ids'] )
+            ? array_values( array_unique( array_filter( array_map( 'absint', (array) $input['hero_slider_ids'] ) ) ) )
+            : array();
+    }
+    foreach ( array( 'signature_text', 'highlight_1_emoji', 'highlight_1_title', 'highlight_1_desc', 'highlight_2_emoji', 'highlight_2_title', 'highlight_2_desc', 'highlight_3_emoji', 'highlight_3_title', 'highlight_3_desc' ) as $key ) {
+        if ( array_key_exists( $key, $input ) ) { $clean[ $key ] = sanitize_textarea_field( $input[ $key ] ); }
+    }
+    if ( array_key_exists( 'featured_product_id', $input ) ) { $clean['featured_product_id'] = absint( $input['featured_product_id'] ); }
+    if ( array_key_exists( 'story_image', $input ) ) { $clean['story_image'] = esc_url_raw( $input['story_image'] ); }
+    if ( array_key_exists( 'story_content', $input ) ) { $clean['story_content'] = wp_kses_post( $input['story_content'] ); }
+    return $clean;
+}
+
+function viet_coffee_admin_assets( $hook ) {
+    if ( 'toplevel_page_viet-coffee-settings' !== $hook ) { return; }
+    wp_enqueue_media();
+    wp_enqueue_script( 'jquery-ui-sortable' );
+    wp_enqueue_editor();
+}
+add_action( 'admin_enqueue_scripts', 'viet_coffee_admin_assets' );
